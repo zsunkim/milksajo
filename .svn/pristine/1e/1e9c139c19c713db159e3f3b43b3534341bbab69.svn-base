@@ -1,0 +1,253 @@
+<%@page import="com.milk.dto.UserDTO"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%
+	request.setCharacterEncoding("utf-8");
+	String workgroup=request.getParameter("workgroup");
+	
+	if(workgroup==null) workgroup="home";
+	
+	String work=request.getParameter("work");
+	if(work==null) work="home";
+	
+	String contentPath=workgroup+"/"+work+".jsp";
+	// 로그인 된 회원인지 확인
+	UserDTO loginMember=(UserDTO)session.getAttribute("loginMember");
+	
+	String messageId = "";
+	if(session.getAttribute("messageId") != null){
+		messageId = (String)session.getAttribute("messageId");
+	}
+	String messagePasswd = "";
+	if(session.getAttribute("messagePasswd") != null){
+		messagePasswd = (String)session.getAttribute("messagePasswd");
+	}
+	
+%>
+
+<!DOCTYPE html>
+<html>
+<head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta http-equiv="X-UA-Compatible" content="ie=edge">
+      <meta name="author" content="harrnish - ig@harrnish">
+      <link rel="icon" href="yourIconUrl" type="image/gif" sizes="16x16">
+      <title>MILKSAJO - The store designed by MILKSAJO</title>
+
+      <!-- external stylesheet -->
+      <link href="<%=request.getContextPath() %>/css/style.css" rel="stylesheet">
+
+      <!-- bootstrapcdn -->
+      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+      <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+      <!-- icon pack -->
+      <script src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons.js"></script>
+
+      <!-- google font -->
+      <link href="https://fonts.googleapis.com/css?family=Playfair+Display&display=swap" rel="stylesheet">
+
+      <!-- jquery cdn -->
+      <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+
+      <!-- tweenmax (greensock) cdn -->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.2/TweenMax.min.js"></script>
+
+      <!-- for on scroll animations -->
+      <link rel="stylesheet" href="<%=request.getContextPath() %>/css/style.css">
+      <link rel="stylesheet" href="<%=request.getContextPath() %>/css/animate.css">
+      <script src="<%=request.getContextPath() %>/js/wow.min.js"></script>
+      
+      <!-- 주소관련 daum api -->
+      <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+      
+</head>
+<style>
+@import url('https://fonts.googleapis.com/css?family=Nanum+Gothic&display=swap');
+</style>
+<body>
+      <div class="my-container">
+<!------------------------------ 헤더 : NAVIGATION STARTS ------------------------------------->
+            <div class="nav">
+                  <!-- 메인로고 -->
+                  <div class="brand">
+                        <span><a href="index.jsp?workgroup=home&work=home">MILKSAJO</a></span>
+                  </div>
+            	 <!-- 메뉴창 -->
+                  <div class="menu-open">
+                        <ion-icon name="menu" size="large"></ion-icon>
+                  </div>
+                  <div class="menu">
+                        <div class="menu-close">
+                              <ion-icon name="close" size="large"></ion-icon>
+                        </div>
+                        <ul>
+                              <li><a href="index.jsp?workgroup=home&work=home">Home</a></li>
+                              <li><a href="#">Category</a>
+	                              <div>
+	                              		<a href="index.jsp?workgroup=product&work=shop">ALL</a><br>
+	                              		<a href="index.jsp?workgroup=product&work=shop#milk">MILK</a><br>
+	                              		<a href="index.jsp?workgroup=product&work=shopl#fermented">FERMENTED</a><br>
+	                              		<a href="index.jsp?workgroup=product&work=shop#cheese">CHEESE</a><br>
+	                              		<a href="index.jsp?workgroup=product&work=shop#fat">FATS&OIL</a><br>
+	                              	</div>
+                              </li>                             
+                              <li><a href="#">Best Seller</a></li>
+                              <li><a href="index.jsp?workgroup=board&work=board_list">board</a></li>
+                              <li><a href="#">Contact</a></li>
+                        </ul>
+                  </div>
+                  <%if(loginMember == null){ // 비로그인상태 : 로그인%>
+				  <!--로그인창 -->
+                  <div class="cart-open">
+                        <ion-icon name="log-in" size="large"></ion-icon>
+                  </div>
+                  <div class="cart"> <%-- 이 클래스 바꾸면 슬라이드 안됨...! --%>
+                        <div class="cart-close">
+                              <ion-icon name="close" size="large"></ion-icon>
+                        </div>
+                        <div class="cart-join">
+                              <a id="cart-join" href="index.jsp?work-group=home&work=join_form" style="font-size:20px;">JOIN</a>
+                        </div>
+                        <!-- LOGIN FORM -->
+                        <div id="login-form"> 
+	                        <form action="index.jsp?work-group=home&work=login_action" method="post">
+	                        	<labe class="title">Login</labe>
+	                        	<div class="login-input">
+		                        	<div class="id-form">
+			                        	<label>I&nbsp;&nbsp;D</label>
+		                              	<input type="text" name="id"/>
+		                              	<div class="error"></div>
+		                              	<div class="error"><%=messageId %></div>
+	                              	</div>
+	                              	<div class="pwd-form">
+		                              	<label>PASSWORD</label>
+		                              	<input type="password" name="passwd"/>
+		                              	<div class="error"><%=messagePasswd %></div>
+	                              	</div>
+                              	</div>
+                              	<div class="login-btns">
+                              		<button type="submit" id="signIn" class="btn btn-dark">Sign in</button>
+                              		<button type="button" id="signUp" class="btn btn-dark">Sign up</button>
+                              	</div>
+    	                    </form>
+                        </div>
+                        
+                        <%@include file="/cart/cart_list.jsp" %>
+                  </div>  
+                                  
+                  <%}else{ // 로그인상태 : 장바구니 %>
+                  <!--장바구니 창-->
+                  <div class="cart-open"> 
+                        <ion-icon name="cart" size="large"></ion-icon>
+                  </div>
+                  <div class="cart"> <%-- 이 클래스 바꾸면 슬라이드 안됨...! --%>
+                        <div class="cart-close">
+                              <ion-icon name="close" size="large"></ion-icon>
+                        </div>
+                        <div class="cart-join">
+                              <a href="home/logout_action.jsp">LOGOUT</a> &nbsp;&nbsp;
+                        </div>
+                  </div>
+                  <%} %>
+            </div>
+ <!------------------------------ 컨텐츠 ------------------------------------->         
+<div id="content">
+		<jsp:include page="<%=contentPath %>"/>
+</div>
+<!------------------------------ 푸터 ------------------------------------->
+            <div class="container-fluid footer">
+                  <div class="section container">
+                        <footer>
+                              <div class="row">
+                                    <div class="col-lg-4 block">
+                                          <p>우유사조, 123 테헤란로,
+                                          <br>
+                                          강남구, 서울시.
+                                          <br>
+                                          대한민국</p>
+                                    </div>
+                                    <div class="col-lg-4 block">
+                                          <p>FAQs
+                                          <br>
+                                          Return Policy
+                                          <br>
+                                          Shipping</p>
+                                    </div>
+                                    <div class="col-lg-4 block">
+                                          <p>Careers
+                                          <br>
+                                          Community
+                                          <br>
+                                          Wholesale</p>
+                                    </div>
+                              </div>
+                        </footer>
+                  </div>
+            </div>
+
+            <!-- FOOTER ENDS -->
+
+      </div>
+
+      <script type="text/javascript">
+
+      //Scroll reveal animations
+
+      new WOW().init();
+      //Scroll activated background change
+      $(function() {
+            $(document).scroll(function() {
+                  var $nav = $(".nav");
+                  $nav.toggleClass('scrolled', $(this).scrollTop() > $nav.height());
+            });
+      });
+    //Toggle MENU
+
+      var t1 = new TimelineMax({paused: true});
+      t1.to(".menu", 0.5, {
+            left: "0%",
+            ease: Power2.easeInOut
+      });
+
+      t1.reverse();
+      $(document).on("click", ".menu-open", function() {
+            t1.reversed(!t1.reversed());
+      });
+      $(document).on("click", ".menu-close", function() {
+            t1.reversed(!t1.reversed());
+      });
+      
+    //Toggle CART
+
+      var t2 = new TimelineMax({paused: true});
+      t2.to(".cart", 0.5, {
+            right: "0%",
+            ease: Power2.easeInOut
+      });
+
+      t2.reverse();
+      $(document).on("click", ".cart-open", function() {
+            t2.reversed(!t2.reversed());
+            
+      });
+      $(document).on("click", ".cart-close", function() {
+            t2.reversed(!t2.reversed());
+      });
+	//세로로 열리는 메뉴
+	      $(function(){
+			var m=$('.menu>ul>li>a');
+			var div=$('.menu>ul>li>div');
+	
+			m.each(function(){
+				$(this).click(function(){
+					//$(this).next().slideToggle(800)
+					$(this).next().slideToggle(800)
+					.parent().siblings().find('div:visible').slideUp(800);
+				});
+			});
+		});
+      </script>
+</body>
+</html>

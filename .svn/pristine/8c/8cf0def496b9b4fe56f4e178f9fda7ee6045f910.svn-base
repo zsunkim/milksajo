@@ -1,0 +1,228 @@
+package com.milk.dao;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.milk.dto.UserDTO;
+
+public class UserDAO extends JdbcDAO{
+	private static UserDAO _dao;
+	
+	private UserDAO() {
+		// TODO Auto-generated constructor stub
+	}
+	
+	static {
+		_dao=new UserDAO();
+	}
+	
+	public static UserDAO getDAO() {
+		return _dao;
+	}
+// 입력 메소드
+	public int insertUser(UserDTO user) {
+		Connection conn = null;
+		PreparedStatement ps = null;
+		int rows=0;
+		try {
+			conn = getConnection();
+			//insert into users values('id', 'pwd', 'name', '2011-01-01', 'address', 'tel', 'email', 0, sysdate, sysdate);
+			String sql = "INSERT iNTO USERS VALUES(?, ?, ?, ?, ?, ?, ?, 0, sysdate, sysdate)";
+			
+			ps = conn.prepareStatement(sql);
+			ps.setString(1, user.getuUserId());
+			ps.setString(2, user.getuPassword());
+			ps.setString(3, user.getuName());
+			ps.setString(4, user.getuBirthday());
+			ps.setString(5, user.getuAddress());
+			ps.setString(6, user.getuTel());
+			ps.setString(7, user.getuEmail());
+			
+			rows = ps.executeUpdate();			
+		} catch (SQLException e) {
+			System.out.println("[에러]insertUser() 메소드의 SQL 오류 = "+e.getMessage());
+		} finally {
+			try {
+				close(conn, ps);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		return rows;
+	}
+	
+// 수정 메소드
+	public int updateManager(UserDTO user) {
+		Connection conn = null;
+		PreparedStatement ps = null;
+		int rows=0;
+		
+		try {
+			conn = getConnection();
+			//update users set U_PASSWORD='', U_NAME='', U_BIRTHDAY='',U_ADDRESS='', U_TEL='5', U_EMAIL='6', U_STATE=7, U_LAST_LOGIN='8', U_JOIN_DATE='9' where U_USER_ID='10';
+			String sql = "UPDATE USERS SET u_password=?, u_name=?, u_birthday=?, u_address=?, u_tel=?, u_email=?, u_state=?, u_last_login=? u_join_date=? where u_user_id=?";
+			
+			ps = conn.prepareStatement(sql);
+			ps.setString(1, user.getuPassword());
+			ps.setString(2, user.getuName());
+			ps.setString(3, user.getuBirthday());
+			ps.setString(4, user.getuAddress());
+			ps.setString(5, user.getuTel());
+			ps.setString(6, user.getuEmail());
+			ps.setInt(7, user.getuState());
+			ps.setString(8, user.getuLastLogin());
+			ps.setString(9, user.getuJoinDate());
+			ps.setString(10, user.getuUserId());
+			
+			rows = ps.executeUpdate();			
+		} catch (SQLException e) {
+			System.out.println("[에러]updateUser() 메소드의 SQL 오류 = "+e.getMessage());
+		} finally {
+			try {
+				close(conn, ps);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		return rows;
+	}
+	
+// 삭제 메소드	
+	public int deleteUser(String userId) {
+		Connection conn = null;
+		PreparedStatement ps = null;
+		int rows = 0;
+		try {
+			conn = getConnection();
+			
+			String sql="DELETE FROM MANAGER WHERE u_user_id=?";
+			ps = conn.prepareStatement(sql);
+			ps.setString(1, userId);
+			
+			rows = ps.executeUpdate();			
+		} catch (SQLException e) {
+			System.out.println("[에러]deleteManager() 메소드의 SQL 오류 = "+e.getMessage());
+		} finally {
+			try {
+				close(conn, ps);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		return rows;
+	}
+// 다중검색 메소드	
+	public List<UserDTO> selectAllUser() {
+		Connection conn = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		List<UserDTO> userList = new ArrayList<UserDTO>();
+		try {
+			conn = getConnection();
+			String sql = "SELECT * From USERS ORDER BY u_user_id DESC";
+			
+			ps = conn.prepareStatement(sql);
+			rs = ps.executeQuery();
+			
+			while(rs.next()) {
+				UserDTO user=new UserDTO();
+				
+				user.setuUserId(rs.getString("u_user_id"));
+				user.setuPassword(rs.getString("u_password"));
+				user.setuName(rs.getString("u_name"));
+				user.setuBirthday(rs.getString("u_birthday"));
+				user.setuAddress(rs.getString("u_address"));
+				user.setuTel(rs.getString("u_tel"));
+				user.setuEmail(rs.getString("u_email"));
+				user.setuState(rs.getInt("u_state"));
+				user.setuLastLogin(rs.getString("u_last_login"));
+				user.setuJoinDate(rs.getString("u_join_date"));
+				
+				userList.add(user);
+			}
+			
+		} catch (SQLException e) {
+			System.out.println("[에러]selectAllManager() 메소드의 SQL 오류 = "+e.getMessage());
+		} finally {
+			try {
+				close(conn, ps, rs);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		
+		return userList;
+	}
+// 단일검색 메소드	
+	public UserDTO selectIdUser(String u_user_id) {
+		Connection conn = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		UserDTO user = null;
+		
+		try {
+			conn = getConnection();
+			
+			String sql = "SELECT * FROM USERS WHERE u_user_id=?";
+			ps = conn.prepareStatement(sql);
+			ps.setString(1, u_user_id);
+			
+			rs = ps.executeQuery();
+			if(rs.next()) {
+				user = new UserDTO();
+				user.setuUserId(rs.getString("U_USER_ID"));
+				user.setuPassword(rs.getString("U_PASSWORD"));
+				user.setuName(rs.getString("U_NAME"));
+				user.setuBirthday(rs.getString("U_BIRTHDAY"));
+				user.setuAddress(rs.getString("U_ADDRESS"));
+				user.setuTel(rs.getString("U_TEL"));
+				user.setuEmail(rs.getString("U_EMAIL"));
+				user.setuState(rs.getInt("U_STATE"));
+				user.setuLastLogin(rs.getString("U_LAST_LOGIN"));
+				user.setuJoinDate(rs.getString("U_JOIN_DATE"));
+			}
+		} catch (SQLException e) {
+			System.out.println("[에러]selectManager() 메소드의 SQL 오류 = "+e.getMessage());
+		} finally {
+			try {
+				close(conn, ps, rs);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		return user;
+	}	
+
+// 최신 로그인 일자를 업데이트
+	public int updateLastLogin(String id) {
+		Connection conn = null;
+		PreparedStatement pstmt=null;
+		int rows=0;
+		try {
+			conn=getConnection();
+			
+			String sql="update users set u_last_login=sysdate where u_user_id=?";
+			pstmt=conn.prepareStatement(sql);
+			pstmt.setString(1, id);
+			
+			rows=pstmt.executeUpdate();
+		} catch (SQLException e) {
+			System.out.println("[에러]updateLastLogin() 메소드의 SQL 오류 = "+e.getMessage());
+		} finally {
+			close(conn, pstmt);
+		}
+		return rows;
+	}
+}

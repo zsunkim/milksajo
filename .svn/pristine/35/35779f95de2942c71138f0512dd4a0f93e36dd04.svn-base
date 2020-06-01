@@ -1,0 +1,35 @@
+<meta charset="utf-8">
+
+<!-- page : 페이지등록 -->
+<div class="form form1">
+	<div class="image-form">
+		<div class="btn-group">
+			<button type="button" class="exit-btn" ng-click="closeImageForm()">X</button>
+		</div>
+		
+		<div class="title-form">
+			<label class="title">page&nbsp;Management</label>
+		</div>
+		
+		<!-- 제품 정보와 관련된 정보를 출력하는 영역 -->
+		<div>
+			<div>
+				<label>serial</label>
+				<select class="form-control" ng-model="selectedProduct" ng-change="changeData()">
+					<option ng-repeat="option in productOption" value="{{option}}">{{option.serial}}</option>
+				</select>
+				<label>name</label>
+				<input ng-model="selected.name" disabled="disabled">
+				<label>size</label>
+				<input ng-model="selected.size" disabled="disabled">
+				<label>price</label>
+				<input ng-model="selected.price" disabled="disabled">
+				
+			</div>
+		</div>
+		
+		<!-- 이미를 출력하는 영역 -->
+		<div>
+		</div>
+	</div>
+</div>

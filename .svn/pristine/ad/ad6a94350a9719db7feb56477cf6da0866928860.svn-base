@@ -1,0 +1,22 @@
+<meta charset="utf-8">
+
+<div class="form form1">
+	<div class="range-search-form">
+		<div class="btn-group">
+			<button type="button" class="exit-btn" ng-click="closeRangeSearchForm()">X</button>
+		</div>
+		<div>
+			<form method="post">
+			<div id="date-range">
+				<div class="date" class="form-control">
+					<input class="form-control" type="date" />
+					<input class="form-control" type="date" />
+			    </div>
+			    <div style="overflow: auto;">
+			    
+		    	</div>
+		    </div>
+			</form>
+		</div>
+	</div>
+</div>

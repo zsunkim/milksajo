@@ -1,0 +1,46 @@
+/*******************************
+    structure directive
+*******************************/
+angular.module("managerApp").directive('mgrHeader', function(){
+    return{
+        templateUrl: "header.tpl.html"
+    }
+})
+angular.module("managerApp").directive('mgrContents', function(){
+    return{
+        templateUrl: "content_nav.tpl.html"
+    }
+})
+
+angular.module("managerApp").directive('mgrFooter', function(){
+    return{
+        templateUrl: "footer.tpl.html"
+    }
+})
+
+/*******************************
+    directive for form
+*******************************/
+angular.module("managerApp").directive('mgrLogin', function(){
+    return{
+        templateUrl: "form_login.tpl.html"
+    }
+})
+
+angular.module("managerApp").directive('mgrJoin', function(){
+    return{
+        templateUrl: "form_join.tpl.html"
+    }
+})
+
+angular.module("managerApp").directive('mgrNotice', function(){
+    return{
+        templateUrl: "form_notice.tpl.html"
+    }
+})
+
+angular.module("managerApp").directive('mgrMenual', function(){
+    return{
+        templateUrl: "form_menual.tpl.html"
+    }
+})

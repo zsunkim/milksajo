@@ -1,0 +1,50 @@
+<%@page import="com.milk.dto.BoardDTO"%>
+<%@page import="com.milk.dao.BoardDAO"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@include file="/security/login_check.jspf" %>
+
+<%
+	if(request.getMethod().equals("GET")) {
+	out.println("<script type='text/javascript'>");
+	out.println("location.href='"+request.getContextPath()+"/site/index.jsp?workgroup=error&work=error400';");
+	out.println("</script>");
+	return;
+}	
+	int ref=Integer.parseInt(request.getParameter("ref"));
+	int reStep=Integer.parseInt(request.getParameter("reStep"));
+	String pageNum=request.getParameter("pageNum");
+	
+	String subject=request.getParameter("subject").replace("<", "&lt;").replace(">", "&gt;");
+	int state=0;
+	
+	String content=request.getParameter("content").replace("<", "&lt;").replace(">", "&gt;");
+	
+	int num=BoardDAO.getDAO().selectNextNum();
+	
+	String qna=request.getParameter("qna");
+	String reply=request.getParameter("reply");
+	
+	String ip=request.getRemoteAddr();
+	
+	BoardDAO.getDAO().updateReStep(ref, reStep);
+	
+	reStep++;
+	
+	BoardDTO board=new BoardDTO();
+	board.setNum(num);
+	board.setId(loginMember.getId());
+	board.setWriter(loginMember.getName());
+	board.setRef(ref);
+	board.setReStep(reStep);
+	board.setContent(content);
+	board.setState(state);
+	board.setQna(qna);
+	
+	
+	BoardDAO.getDAO().insertBoarder(board);
+	
+  	out.println("<script type='text/javascript'>");
+	out.println("location.href='"+request.getContextPath()+"/index.jsp?workgroup=board&work=detail_board&pageNum="+pageNum+"';");
+	out.println("</script>");
+%>

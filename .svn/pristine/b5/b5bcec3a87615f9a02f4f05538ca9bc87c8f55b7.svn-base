@@ -1,0 +1,154 @@
+/************************************
+	login service
+**************************************/
+/************************************
+	join service
+**************************************/
+
+/************************************
+	notice service
+**************************************/
+angular.module("managerApp").factory("noticeDataFactory", ["$http", function($http){
+		return[{
+			e_no: "",
+			comment: "",
+			date: ""
+		}]
+}]);
+/*********************************************************************************************************/
+/************************************
+	user Data factory
+**************************************/
+angular.module("managerApp").factory("userDataFactory", ["$http", "$q", "uriConfig", function($http, $q, uriConfig){
+	return {
+		get: function(){
+			var deferred = $q.defer();
+			
+			$http({
+				method: 'POST',
+				url: uriConfig.getData,
+				data: $.param({
+					type: "user"
+				}),
+				headers: {
+					'Content-Type': "application/x-www-form-urlencoded; charset=utf-8"
+				}
+			}).then(function successCallback(response) {
+				// ajax 성공
+				deferred.resolve(response.data);
+			}, function errorCallback(response) {
+				console.log("error : get data user");
+			});
+			
+			return deferred.promise;
+		}
+	}
+}]);
+
+/************************************
+	product Data factory
+**************************************/
+angular.module("managerApp").factory("productDataFactory", ["$http", "$q", "uriConfig", function($http, $q, uriConfig){
+	return {
+		get: function(){
+			var deferred = $q.defer();
+			$http({
+				method: 'POST',
+				url: uriConfig.getData,
+				data: $.param({
+					type: "product"
+				}),
+				headers: {
+					'Content-Type': "application/x-www-form-urlencoded; charset=utf-8"
+				}
+			}).then(function successCallback(response) {
+				// ajax 성공
+				deferred.resolve(response.data);
+			}, function errorCallback(response) {
+				console.log("error : get data product");
+			});
+			return deferred.promise;
+		}
+	}
+}]);
+
+/************************************
+	board Data factory
+**************************************/
+angular.module("managerApp").factory("boardDataFactory", ["$http", "$q", "uriConfig", function($http, $q, uriConfig){
+	return {
+		get: function(){
+			var deferred = $q.defer();
+			$http({
+				method: 'POST',
+				url: uriConfig.getData,
+				data: $.param({
+					type: "board"
+				}),
+				headers: {
+					'Content-Type': "application/x-www-form-urlencoded; charset=utf-8"
+				}
+			}).then(function successCallback(response) {
+				// ajax 성공
+				deferred.resolve(response.data);
+			}, function errorCallback(response) {
+				console.log("error : get data board");
+			});
+			return deferred.promise;
+		}
+	}
+}]);
+
+/************************************
+	order Data factory
+**************************************/
+angular.module("managerApp").factory("orderDataFactory", ["$http", "$q", "uriConfig", function($http, $q, uriConfig){
+	return {
+		get: function(){
+			var deferred = $q.defer();
+			$http({
+				method: 'POST',
+				url: uriConfig.getData,
+				data: $.param({
+					type: "order"
+				}),
+				headers: {
+					'Content-Type': "application/x-www-form-urlencoded; charset=utf-8"
+				}
+			}).then(function successCallback(response) {
+				// ajax 성공
+				deferred.resolve(response.data);
+			}, function errorCallback(response) {
+				console.log("error : get data product");
+			});
+			return deferred.promise;
+		}
+	}
+}]);
+
+/************************************
+	page Data factory
+**************************************/
+angular.module("managerApp").factory("pageDataFactory", ["$http", "$q", "uriConfig", function($http, $q, uriConfig){
+	return {
+		get: function(){
+			var deferred = $q.defer();
+			$http({
+				method: 'POST',
+				url: uriConfig.getData,
+				data: $.param({
+					type: "page"
+				}),
+				headers: {
+					'Content-Type': "application/x-www-form-urlencoded; charset=utf-8"
+				}
+			}).then(function successCallback(response) {
+				// ajax 성공
+				deferred.resolve(response.data);
+			}, function errorCallback(response) {
+				console.log("error : get data page");
+			});
+			return deferred.promise;
+		}
+	}
+}]);

@@ -1,0 +1,84 @@
+<meta charset="utf-8">
+
+<div class="form form1">
+	<div class="join-form">
+		<div class="btn-group">
+			<button type="button" class="exit-btn" ng-click="closeJoinForm()">X</button>
+		</div>
+		<form name="joinForm" method="post" ng-submit="join()">
+			<label class="title">Join</label>
+				<table>
+				<!-- ----------------------------------------------------------------------- -->
+				<tr>
+					<th class="join-label"><label class="join-label" for="mgrNo">employee_no</label></th>
+					<th class="join-input"><input type="text" name="mgrNo" class="form-control" ng-keyup="isExist(joinForm.mgrNo.$viewValue)" placeholder="Enter employee_no" ng-model="mgrNoJoin" ng-pattern="/^[0-9]{10}$/" ng-required="true"></th>
+				</tr>
+				<tr>
+					<th></th>
+					<th ng-message="joinForm.mgrNo.$error">
+						<span class="error" ng-show="joinForm.mgrNo.$error.required">Required input employee_no</span>
+						<span class="error" ng-show="joinForm.mgrNo.$error.pattern">Please enter a valid ID[digit: 10]</span>
+						<span class="error" ng-show="joinForm.mgrNo.$valid && exist">exist duplicated no</span>
+					</th>
+				</tr>
+				<!-- ----------------------------------------------------------------------- -->
+				<!-- 조건1. 6~20 영문 대소문자 / 조건2. 최소 1개의 숫자 혹은 특수 문자를 포함해야 함-->
+				<tr>
+					<th class="join-label"><label class="join-label" for="mgrPwd">password</label></th>
+					<th class="join-input"><input type="password" name="mgrPwd" class="form-control" ng-keydown="compare(mgrRPwdJoin)" ng-keypress="compare(mgrRPwdJoin)" ng-keyup="compare(mgrRPwdJoin)" placeholder="Enter password" ng-model="mgrPwdJoin" ng-pattern="/^(?=.*[a-zA-Z])((?=.*\d)|(?=.*\W)).{6,20}$/" ng-required="true"></th>
+				</tr>
+				<tr>
+					<th></th>
+					<th ng-message="joinForm.mgrPwd.$error">
+						<span class="error" ng-show="joinForm.mgrPwd.$error.required">Required input password</span>
+						<span class="error" ng-show="joinForm.mgrPwd.$error.pattern">Please enter a valid password</span>
+					</th>
+				</tr>
+				<!-- ----------------------------------------------------------------------- -->
+				<tr>
+					<th class="join-label"><label class="join-label" for="mgrRPwd">re_password</label></th>
+					<th class="join-input"><input type="password" name="mgrRPwd" class="form-control" ng-keydown="compare(mgrRPwdJoin)" ng-keypress="compare(mgrRPwdJoin)" ng-keyup="compare(mgrRPwdJoin)" placeholder="Enter re password" ng-model="mgrRPwdJoin" ng-keyup="compare(mgrPwd)" ng-required="true"></th>
+				</tr>
+				<tr>
+					<th></th>
+					<th>
+						<span class="error" ng-show="!isconfirm && joinForm.mgrPwd.$dirty">Password does not match</span>
+					</th>
+				</tr>
+				<!-- ----------------------------------------------------------------------- -->
+				<tr>
+					<th class="join-label"><label class="join-label" for="mgrNameJoin">name</label></th>
+					<th class="join-input"><input type="text" name="mgrName" class="form-control" placeholder="Enter your name" ng-model="mgrNameJoin" ng-pattern="/^[가-힣]{2,4}$/" ng-required="true"></th>
+				</tr>
+				<tr>
+					<th></th>
+					<th ng-message="joinForm.mgrName.$error">
+						<span class="error" ng-show="joinForm.mgrName.$error.required">Please enter a valid name</span>
+						<span class="error" ng-show="joinForm.mgrName.$error.pattern">Please enter a valid name</span>
+					</th>
+				</tr>
+				<!-- ----------------------------------------------------------------------- -->
+				<tr>
+					<th class="join-label"><label class="join-label" for="mgrCodeJoin">join code</label></th>
+					<th class="join-input"><input type="text" name="mgrCode" class="form-control" placeholder="Enter your name" ng-model="mgrCodeJoin" ng-pattern="/^[a-zA-Z0-9]{10}$/" ng-required="true"></th>
+				</tr>
+				<tr>
+					<th></th>
+					<th ng-message="joinForm.mgrCode.$error">
+						<span class="error" ng-show="joinForm.mgrCode.$error.required">Please enter a check code</span>
+						<span class="error" ng-show="joinForm.mgrCode.$error.pattern">Please enter a valid code[char: 10]</span>
+					</th>
+				</tr>
+				<!-- ----------------------------------------------------------------------- -->
+				<tr>
+					<th colspan="2" class="form-btn-group">
+						<button type="submit" class="btn btn-primary" ng-disabled="joinForm.$invalid || exist || !isconfirm">Join</button>
+						<button type="reset" class="btn btn-warning" ng-click="joinReset()">Reset</button>
+					</th>
+				</tr>
+				<!-- ----------------------------------------------------------------------- -->
+			</table>
+		</form>
+		</div>
+	</div>
+</div>

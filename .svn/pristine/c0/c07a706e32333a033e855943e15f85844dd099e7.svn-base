@@ -1,0 +1,264 @@
+/************************************
+	login service
+**************************************/
+/************************************
+	join service
+**************************************/
+
+/************************************
+	notice service
+**************************************/
+angular.module("managerApp").factory("noticeDataFactory", ["$http", function($http){
+		return[{
+			e_no: "",
+			comment: "",
+			date: ""
+		}]
+}]);
+/*********************************************************************************************************/
+/************************************
+	user Data factory
+**************************************/
+angular.module("managerApp").factory("userDataFactory", ["$http", function($http){
+	return [{
+		id:"",
+		name:"",
+		age: "",
+		tel: "",
+		email: "",
+		addr: "",
+		birthday: "",
+		joindate: ""
+	},
+	{
+		id:"leetaeksoo",
+		name:"이택수",
+		age: "28",
+		tel: "010-1111-1490",
+		email: "ts1490@naver.com",
+		addr_1: "강동구 명일동 111번지 103호",
+		birthday: "",
+		joindate: ""
+	},
+	{
+		id:"yoon369",
+		name:"전승윤",
+		age: "33",
+		tel: "010-5678-3564",
+		email: "yoon@daum.net",
+		addr_1: "서울 강남구 논현동",
+		birthday: "",
+		joindate: ""
+		
+	},
+	{
+		id:"yeon123",
+		name:"김희연",
+		age: "28",
+		tel: "010-1234-1234",
+		email: "hy1234@google.com",
+		addr_1: "경기도 이천시 ......",
+		birthday: "",
+		joindate: ""
+	},
+	{
+		id:"jisunMilk",
+		name:"김지선",
+		age: "25",
+		tel: "010-1212-1234",
+		email: "jisun@google.com",
+		addr_1: "경기도 이천시 ......",
+		birthday: "",
+		joindate: ""
+	}]
+}]);
+
+/************************************
+	product Data factory
+**************************************/
+angular.module("managerApp").factory("productDataFactory", ["$http", function($http){
+	return [{
+		serial:"",
+		div:"",
+		name: "",
+		origin: "",
+		size: "",
+		price: "",
+		amount: "",
+		sales: ""
+	},
+	{
+		serial:"1111",
+		div:"milk",
+		name: "white_milk",
+		origin: "seoul",
+		size: "10",
+		price: "1500",
+		amount: "20",
+		sales: "10"
+	},
+	{
+		serial:"2222",
+		div:"cheese",
+		name: "string_cheese",
+		origin: "seoul",
+		size: "5",
+		price: "2000",
+		amount: "10",
+		sales: "10"
+	},
+	{
+		serial:"3333",
+		div:"milk",
+		name: "choco_milk",
+		origin: "seoul",
+		size: "5",
+		price: "2000",
+		amount: "20",
+		sales: "3"
+	},
+	{
+		serial:"3333",
+		div:"milk",
+		name: "choco_milk",
+		origin: "seoul",
+		size: "5",
+		price: "2000",
+		amount: "20",
+		sales: "3"
+	},
+	{
+		serial:"3333",
+		div:"milk",
+		name: "choco_milk",
+		origin: "seoul",
+		size: "5",
+		price: "2000",
+		amount: "20",
+		sales: "3"
+	},
+	{
+		serial:"3333",
+		div:"milk",
+		name: "choco_milk",
+		origin: "seoul",
+		size: "5",
+		price: "2000",
+		amount: "20",
+		sales: "3"
+	},
+	{
+		serial:"3333",
+		div:"milk",
+		name: "choco_milk",
+		origin: "seoul",
+		size: "5",
+		price: "2000",
+		amount: "20",
+		sales: "3"
+	},
+	{
+		serial:"3333",
+		div:"milk",
+		name: "choco_milk",
+		origin: "seoul",
+		size: "5",
+		price: "2000",
+		amount: "20",
+		sales: "3"
+	},
+	{
+		serial:"3333",
+		div:"milk",
+		name: "choco_milk",
+		origin: "seoul",
+		size: "5",
+		price: "2000",
+		amount: "20",
+		sales: "3"
+	},
+	{
+		serial:"3333",
+		div:"milk",
+		name: "choco_milk",
+		origin: "seoul",
+		size: "5",
+		price: "2000",
+		amount: "20",
+		sales: "3"
+	},
+	{
+		serial:"3333",
+		div:"milk",
+		name: "choco_milk",
+		origin: "seoul",
+		size: "5",
+		price: "2000",
+		amount: "20",
+		sales: "3"
+	},
+	{
+		serial:"3333",
+		div:"milk",
+		name: "choco_milk",
+		origin: "seoul",
+		size: "5",
+		price: "2000",
+		amount: "20",
+		sales: "3"
+	}]
+}]);
+
+/************************************
+	board Data factory
+**************************************/
+angular.module("managerApp").factory("boardDataFactory", ["$http", function($http){
+	return [{
+		board: ""
+	}];
+}]);
+
+/************************************
+	order Data factory
+**************************************/
+angular.module("managerApp").factory("orderDataFactory", ["$http", function($http){
+	return [{
+		"order_no": "20200113001",
+		"user": "leetaeksoo",
+		"product": "original_milk",
+		"amount": "10",
+		"required": "15000",
+		"deposit": "",
+		"refund": "",
+		"state": "1"
+	},
+	{
+		"order_no": "20200113001",
+		"user": "leetaeksoo",
+		"product": "cheese",
+		"amount": "20",
+		"required": "25000",
+		"deposit": "",
+		"refund": "",
+		"state": "1"
+	},
+	{
+		"order_no": "20200113002",
+		"user": "jisun",
+		"product": "original_milk",
+		"amount": "30",
+		"required": "20000",
+		"deposit": "",
+		"refund": "",
+		"state": "1"
+	}]
+}]);
+
+/************************************
+	page Data factory
+**************************************/
+angular.module("managerApp").factory("pageDataFactory", ["$http", function($http){
+	return [{
+		page:""
+	}];
+}]);

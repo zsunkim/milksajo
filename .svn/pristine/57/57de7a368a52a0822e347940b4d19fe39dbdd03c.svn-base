@@ -1,0 +1,40 @@
+package com.milk.dto;
+
+public class PageDTO {
+	private int ppNo;
+	private int ppSerialNo;
+	private String product;
+	private String ppmainImage;
+	private int ppemployeeNo;
+	
+	public int getPpNo() {
+		return ppNo;
+	}
+	public void setPpNo(int ppNo) {
+		this.ppNo = ppNo;
+	}
+	public int getPpSerialNo() {
+		return ppSerialNo;
+	}
+	public void setPpSerialNo(int ppSerialNo) {
+		this.ppSerialNo = ppSerialNo;
+	}
+	public String getProduct() {
+		return product;
+	}
+	public void setProduct(String product) {
+		this.product = product;
+	}
+	public String getPpmainImage() {
+		return ppmainImage;
+	}
+	public void setPpmainImage(String ppmainImage) {
+		this.ppmainImage = ppmainImage;
+	}
+	public int getPpemployeeNo() {
+		return ppemployeeNo;
+	}
+	public void setPpemployeeNo(int ppemployeeNo) {
+		this.ppemployeeNo = ppemployeeNo;
+	}
+}

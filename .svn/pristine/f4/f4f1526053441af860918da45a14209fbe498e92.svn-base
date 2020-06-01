@@ -1,0 +1,40 @@
+<%@page import="com.milk.dao.OrderDAO"%>
+<%@page import="com.milk.dto.OrderDTO"%>
+<%@page import="java.text.DecimalFormat"%>
+<%@page import="com.milk.dao.ProductDAO"%>
+<%@page import="com.milk.dto.ProductDTO"%>
+<%@page import="java.util.List"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+ <% 
+ 	List<OrderDTO> orderList=OrderDAO.getDAO().selectAllOrder();
+ 	List<ProductDTO> produList=ProductDAO.getDAO().selectAllProduct();
+ %>
+
+<div class="container">
+	<div class="my_list">
+		<span>주문 내역</span>
+		
+		<%if((orderList)==null){ %>
+			<div class="emtyMsg">주문 내역이 없습니다.</div>
+		<%} else{ %>
+			<div class="infoHead">
+				<span class="orderNo">주문번호</span>
+				<span class="pname">상품정보</span>
+				<span class="amount">주문 수량</span>
+				<span class="price">가격</span>
+				<span class="state">배송 정보</span>
+			</div>
+			
+			<%for(OrderDTO order:orderList){ %>
+				<div class="infoBox" style="border: 1px solid black;">
+					<div class="orderNo"><%=order.getOrderNo() %></div>
+					<div class="pname"><%=ProductDAO.getDAO().selectNoProduct(order.getSerialNo())%></div>
+					<div class="state"><%=order.getAmount() %></div>
+					<div class="qty"><%=DecimalFormat.getInstance().format(order.getPrice()) %>원</div>
+					<div class="state"><%=order.getState() %></div>
+				</div>
+			<%} %>
+		<%} %>
+	</div>
+<div>

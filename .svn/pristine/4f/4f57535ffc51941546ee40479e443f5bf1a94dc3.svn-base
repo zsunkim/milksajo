@@ -1,0 +1,92 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%
+
+%>
+
+<div class="shop_cart">
+	<h4>SHOPPONG CART</h4>
+	<hr>
+
+	<h5>장바구니 담긴 상품</h5>
+	<div class="cart_list">
+		<table summary="사진, 제품명, 수량, 가격, 취소">
+			
+			<thead>
+				<tr>
+					<th scope="col" class="picture">사진</th>
+					<th scope="col" class="product">제품명</th>
+					<th scope="col" class="quantity">수량</th>
+					<th scope="col" class="total">가격</th>
+					<th scope="col" class="button"></th>
+				</tr>
+			</thead>
+			
+			<tfoot>
+				<tr>
+					<td colspan="10">
+						<div>
+							<div class="order-price">
+								<p>총 주문금액</p>
+								<strong>
+									
+									원
+								</strong>
+								<span> </span>
+							</div>
+							<span class="mark">+</span>
+							<div class="order-price">
+								<p>배송료</p>
+								<strong>2,500 원</strong>
+								<span> </span>
+							</div>
+							<span class="mark">=</span>
+							<div class="order-price">
+								<p>총 결제 금액</p>
+								<strong>
+									
+									원
+								</strong>
+							</div>
+						</div>
+					</td>
+				</tr>
+			</tfoot>
+			
+			<tbody>
+				<tr>
+					<td class="picture">
+						<a href="http://localhost:8000/milk/index.jsp?workgroup=product&amp;work=whiteMilk">
+							<img src="./MILKSAJO - The store designed by MILKSAJO_files/whiteMilk.jpg">
+						</a>
+					</td>
+					<td class="product">
+						<a href="http://localhost:8000/milk/index.jsp?workgroup=product&amp;work=whiteMilk">
+							
+							<strong>WHITE FRESH MILK</strong>
+						</a>
+					</td>
+					<td class="quantity">
+						<input type="number" value="null" data-wow-delay="0.8s" min="1">
+						<a href="javascript:;" onclick="Basket.modifyQuantity()" class="btn-modity">수정</a>
+					</td>
+					<td class="total">
+						
+					</td>
+					<td class="button">
+						<a href="javascript:;" onclick="Basket.deleteBasketItem(0);" class="btn-delete">삭제</a>
+					</td>
+				</tr>
+			</tbody>
+			
+		</table>
+	</div>
+</div>
+     
+     <div class="center">
+     	<button type="button" onclick="location.href=&#39;/milk/site/index.jsp?workgroup=cart&amp;work=cart_order&#39;;" class="btn-order">주문하기</button>
+     	
+     </div>
+     
+     
+     

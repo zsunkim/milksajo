@@ -1,0 +1,39 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+    
+<%
+	// id or pwd
+	String inf = request.getParameter("inf");
+	// error : 실패 / id 성공 : id / pwd 성공 : complete(메일발송) 
+	String msg = request.getParameter("msg");
+%>
+<div>
+
+<%if(inf.equals("id")){ %>
+	<%if(msg.equals("error")) { %>
+		<h1>아이디 찾기</h1>
+		<hr>
+		<h2>이름과 생년월일이 일치하지 않습니다. <br> 다시 입력해주세요.</h2>
+		<a href="index.jsp?workgroup=member&work=search_login&inf=id">아이디찾기</a>
+	<% } else { %>
+		<h1>아이디 찾기</h1>
+		<hr>
+		<h2>당신의 아이디는 <%=msg %>입니다. </h2>
+		<a href="index.jsp?workgroup=home&work=home">홈으로</a>
+	<% } %>
+<%}else if(inf.equals("pwd")){ %>	
+	<%if(msg.equals("error")) { %>
+		<h1>비밀번호 찾기</h1>
+		<hr>
+		<h2>입력하신 아이디와 이메일이 일치하지 않습니다. <br> 다시 입력해주세요.</h2>
+		<a href="index.jsp?workgroup=member&work=search_login&inf=pwd">비밀번호찾기</a>
+	<% } else { %>
+		<h1>비밀번호 찾기</h1>
+		<hr>
+		<h2>이메일로 새로운 비밀번호를 전송했습니다. 비밀번호는 반드시 바꿔서 사용해주시기 바랍니다. </h2>
+		<a href="index.jsp?workgroup=home&work=home">홈으로</a>
+	<% } %>
+<%} %>
+</div>
+
+

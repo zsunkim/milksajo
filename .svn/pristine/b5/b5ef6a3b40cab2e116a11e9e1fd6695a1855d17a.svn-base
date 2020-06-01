@@ -1,0 +1,103 @@
+package com.milk.dao;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
+import com.milk.dto.BoardDTO;
+
+public class BoardDAO extends JdbcDAO{
+	private static BoardDAO _dao;
+	
+	public BoardDAO() {
+		// TODO Auto-generated constructor stub
+	}
+	
+	static {
+		_dao=new BoardDAO();
+	}
+	
+	public static BoardDAO getDAO() {
+		return _dao;
+	}
+	
+	//--------------------게시글 입력------------------------
+	public int insertBoard(BoardDTO board) {
+		Connection con=null;
+		PreparedStatement ps=null;
+		int rows=0;
+		
+		try {
+			con=getConnection();
+			String sql="INSERT INTO BOARDER VALUES(BORDER_SEQ.NEXTVAL,?,?,SYSDATE,?,?);";
+			ps=con.prepareStatement(sql);
+			ps.setInt(1, board.getBdNo());
+			ps.setString(2, board.getBdTitle());
+			ps.setString(3, board.getBdContent());
+			ps.setString(4, board.getBdUserId());
+			ps.setString(5, board.getBdDate());
+			ps.setInt(6, board.getBdPw());
+			
+			rows=ps.executeUpdate();
+		} catch (SQLException e) {
+			System.out.println("[에러]insertBoard() 메소드의 오류");
+		} finally {
+			close(con, ps);
+			
+		}
+		return rows;
+	}
+	
+	// ------------------게시글 수정------------------------
+	public int updateBoard(BoardDTO board) {
+		Connection con=null;
+		PreparedStatement ps=null;
+		int rows=0;
+		
+		try {
+			con=getConnection();
+			
+			String sql="UPDATE BOARDER SET BD_TITLE,BD_CONTENT,BD_DATE=SYSDATE, BD_PW WHERE BD_NO=?;";
+			ps=con.prepareStatement(sql);
+			ps.setString(1, board.getBdTitle());
+			ps.setString(2, board.getBdContent());
+			ps.setString(3, board.getBdDate());
+			ps.setInt(4, board.getBdPw());
+			
+			rows=ps.executeUpdate();
+			
+		} catch (SQLException e) {
+			System.out.println("[에러]updateBoard() 메소드의 오류");
+		} finally {
+			close(con, ps);
+		}
+		return rows;
+	}
+	
+	//--------------------- 게시글 삭제 메소드-----------------------
+	public int deleteBoard(BoardDTO board) {
+		Connection con=null;
+		PreparedStatement ps=null;
+		int rows=0;
+		
+		try {
+			con=getConnection();
+			
+			String sql="UPDATE BOARDER SET BD_TITLE,BD_CONTENT,BD_DATE=SYSDATE, BD_PW WHERE BD_NO=?;";
+			ps=con.prepareStatement(sql);
+			ps.setString(1, board.getBdTitle());
+			ps.setString(2, board.getBdContent());
+			ps.setString(3, board.getBdDate());
+			ps.setInt(4, board.getBdPw());
+			
+			rows=ps.executeUpdate();
+			
+		} catch (SQLException e) {
+			System.out.println("[에러]updateBoard() 메소드의 오류");
+		} finally {
+			close(con, ps);
+		}
+		return rows;
+	}
+}
+

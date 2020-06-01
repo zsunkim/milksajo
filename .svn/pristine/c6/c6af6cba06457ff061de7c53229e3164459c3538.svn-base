@@ -1,0 +1,28 @@
+<meta charset="utf-8">
+
+<div class="form form1 menual-form">
+
+	<div class="btn-group">
+		<button type="button" class="exit-btn" ng-click="closeMenualForm()">X</button>
+	</div> 
+	<div class="table">
+		<div class="title">Menual</div>
+		<div class="content">
+			<div class="ele">
+				<h4>User</h4>
+			</div>
+			<div class="ele">
+				<h4>Product</h4>
+			</div>
+			<div class="ele">
+				<h4>Board</h4>
+			</div>
+			<div class="ele">
+				<h4>Order</h4>
+			</div>
+			<div class="ele">
+				<h4>Page</h4>
+			</div>
+		</div>
+	</div>
+</div>

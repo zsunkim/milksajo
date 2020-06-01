@@ -1,0 +1,34 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%-- 게시글 입력 페이지 게시글 입력 받아 write_two 페이지로 이동 --%>
+
+<form action="<%=request.getContextPath()%>/board/write_action.jsp" method="post">
+
+<legend>게시글 입력<legend>
+   	<ul>
+	    <li>
+	    <select class="custom-select">
+	 	 	<option selected>문의 사항</option>
+	  		<option value="1">배송 관련 문의</option>
+	  		<option value="2">상품 관련 문의</option>
+	 		<option value="3">기타 문의</option>
+		</select>
+		</li>	
+    	<li>
+    		<div>제목</div>
+    		<input name="bdTitle" id="bdTitle" type="text">
+    		<div>제목을 입력해 주세요.</div>
+    	</li>
+    	<li>
+    		<div>내용</div>
+    		<textarea name="bdContent" id="bdContent" rows="5" cols="50"></textarea>
+  			<div>내용을 입력해 주세요.</div>
+  		</li>
+    </ul>
+<div>
+<button type="button">글쓰기</button>
+<button type="button">목록으로</button>
+</div>      
+</form>
+</body>
+</html>

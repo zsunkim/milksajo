@@ -1,0 +1,154 @@
+package com.milk.dao;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import com.milk.dto.BuyingRecordDTO;
+import com.milk.dto.ProductDTO;
+
+public class BuyingRecordDAO extends JdbcDAO{
+	private static BuyingRecordDAO _dao;
+	
+	private BuyingRecordDAO() {
+		// TODO Auto-generated constructor stub
+	}
+	
+	static {
+		_dao = new BuyingRecordDAO();
+	}
+	
+	public static BuyingRecordDAO getDAO() {
+		return _dao;
+	}
+	
+// 입력 메소드
+	public int insertBuyingRecord(BuyingRecordDTO record) {
+		int rows = 0;
+		String orderNo = createOrderNo();
+		
+		Connection conn = null;
+		PreparedStatement ps = null;
+		
+		try {
+			conn = getConnection();
+			// insert into bying_record values()
+			String sql = "insert into buying_record values(?, ?, ?, ?, ?)";
+		
+			ps = conn.prepareStatement(sql);
+			
+			ps.setString(1, orderNo);
+			ps.setInt(2, record.getBrSerialNo());
+			ps.setInt(3, record.getBrAmount());
+			ps.setInt(4, record.getBrDeposit());
+			ps.setInt(5, record.getBrRefund());
+			ps.setInt(6, record.getBrState());
+			
+			rows = ps.executeUpdate();			
+		} catch (SQLException e) {
+			System.out.println("[에러]insertBuying_record() 메소드의 SQL 오류 = "+e.getMessage());
+		} finally {
+			try {
+				close(conn, ps);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		return rows;
+	}
+// 수정 메소드
+	public int updateBuyingRecord(BuyingRecordDTO record) {
+		int rows = 0;
+		
+		Connection conn = null;
+		PreparedStatement ps = null;
+		
+		try {
+			conn = getConnection();
+			// update product set p_division=?, p_name=?, p_origin=?, p_size=?, p_price=?, p_amount=?, p_sale_amount=? where p_serial_no=?;
+			String sql = "update buying_record set BR_SERIAL_NO=?, BR_AMOUNT=?, BR_DEPOSIT=?, BR_REFUND=?, BR_REFUND=?, BR_STATE=? where BR_ORDER_NO=?";
+		
+			ps = conn.prepareStatement(sql);
+			
+			ps.setInt(1, record.getBrSerialNo());
+			ps.setInt(2, record.getBrAmount());
+			ps.setInt(3, record.getBrDeposit());
+			ps.setInt(4, record.getBrRefund());
+			ps.setInt(5, record.getBrState());
+			ps.setString(6, record.getBrOrderNo());
+			
+			rows = ps.executeUpdate();			
+		} catch (SQLException e) {
+			System.out.println("[에러]updateBuyingRecord() 메소드의 SQL 오류 = "+e.getMessage());
+		} finally {
+			try {
+				close(conn, ps);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		return rows;
+	}
+	
+// 다중검색 메소드
+	public List<BuyingRecordDTO> selectAllBuyingRecord() {
+		List<BuyingRecordDTO> recordList = new ArrayList<BuyingRecordDTO>();
+		
+		Connection conn = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		try {
+			conn = getConnection();
+			String sql = "SELECT * From BUYING_RECORD ORDER BY BR_ORDER_NO DESC";
+			
+			ps = conn.prepareStatement(sql);
+			rs = ps.executeQuery();
+			
+			while(rs.next()) {
+				BuyingRecordDTO record = new BuyingRecordDTO();
+				
+				record.setBrOrderNo(rs.getString(""));
+				record.setBrSerialNo(rs.getInt(""));
+				record.setBrAmount(rs.getInt(""));
+				record.setBrDeposit(rs.getInt(""));
+				record.setBrRefund(rs.getInt(""));
+				record.setBrState(rs.getInt(""));
+				
+				recordList.add(record);
+			}
+		} catch (SQLException e) {
+			System.out.println("[에러]selectAllBuyingRecord() 메소드의 SQL 오류 = "+e.getMessage());
+		} finally {
+			try {
+				close(conn, ps, rs);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		return recordList;
+	}
+	
+	
+// 주문번호를 생성하는 메소드 
+	private static String createOrderNo() {
+		String r = "";
+		String today = new SimpleDateFormat("yyyyMMdd").format(new Date());
+		
+		List<BuyingRecordDTO> list = _dao.selectAllBuyingRecord();
+		if(list == null) {
+			r = today + list.get(0).getBrOrderNo().substring(8, 11);
+		}else {
+			r = today + "001";
+		}
+		return r;
+	}
+}

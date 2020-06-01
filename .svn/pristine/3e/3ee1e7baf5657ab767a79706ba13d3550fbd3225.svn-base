@@ -1,0 +1,75 @@
+package com.milk.dto;
+/*
+이름         널?       유형             
+---------- -------- -------------- 
+BD_NO      NOT NULL NUMBER(4)      
+BD_TITLE   NOT NULL VARCHAR2(30)   
+BD_CONTENT NOT NULL VARCHAR2(2000) 
+BD_DATE             DATE           
+BD_USER_ID          VARCHAR2(20)   
+BD_PW      NOT NULL VARCHAR2(20)  
+*/
+
+public class BoardDTO {
+	private int bdNo;
+	private int bdPw;
+	private String bdTitle;
+	private String bdContent;
+	private String bdDate;
+	private String bdUserId;
+	
+	public BoardDTO() {
+		// TODO Auto-generated constructor stub
+	}
+
+	public int getBdNo() {
+		return bdNo;
+	}
+
+	public void setBdNo(int bdNo) {
+		this.bdNo = bdNo;
+	}
+
+	public int getBdPw() {
+		return bdPw;
+	}
+
+	public void setBdPw(int bdPw) {
+		this.bdPw = bdPw;
+	}
+
+	public String getBdTitle() {
+		return bdTitle;
+	}
+
+	public void setBdTitle(String bdTitle) {
+		this.bdTitle = bdTitle;
+	}
+
+	public String getBdContent() {
+		return bdContent;
+	}
+
+	public void setBdContent(String bdContent) {
+		this.bdContent = bdContent;
+	}
+
+	public String getBdDate() {
+		return bdDate;
+	}
+
+	public void setBdDate(String bdDate) {
+		this.bdDate = bdDate;
+	}
+
+	public String getBdUserId() {
+		return bdUserId;
+	}
+
+	public void setBdUserId(String bdUserId) {
+		this.bdUserId = bdUserId;
+	}
+	
+	
+	
+}

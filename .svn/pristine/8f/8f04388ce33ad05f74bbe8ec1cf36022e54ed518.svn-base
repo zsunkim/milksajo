@@ -1,0 +1,155 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+
+<div class="container-fluid">
+                  <div class="row product-sec">
+                        <div class="col-lg-6 prod-left">
+                              <div class="hero-image">
+                                    <img src="images/yogurt.jpg" class="img wow fadeInUp" alt="">
+                              </div>
+                        </div>
+
+                        <div class="col-lg-6 prod-right">
+                              <div class="prod-opt">
+                                    <h3 id="prod-name" class="wow fadeInUp" data-wow-delay="0.2s">Plain Yogurt</h3>
+                                    <p class="wow fadeInUp" data-wow-delay="0.2s">NO.1 유산균으로 만든 건강하고 맛있는 요거트.</p>
+                                    <br>
+                                    <p id="price" class="wow fadeInUp" data-wow-delay="0.3s">가격 : 3,000 원</p>
+                                    <p id="capacity" class="wow fadeInUp" data-wow-delay="0.3s">용량 : 400ml</p>
+
+                                    <br>
+
+                                    <input type="number" placeholder="수량" class="wow fadeInUp" data-wow-delay="0.5s" min="1">
+
+                                    <div class="add-prod wow fadeInUp" data-wow-delay="0.8s">
+                                          <a href="#">Add to bag</a>
+                                    </div>
+                                    
+                                    <div class="link wow fadeInUp" data-wow-delay="0.8s">
+                                    <a href="shop.html">다른 제품 보러가기 <ion-icon name="arrow-round-forward"></ion-icon></a>
+                              		</div>
+                              </div>
+                        </div>
+                  </div>
+            </div>
+
+            <!-- PRODUCT ENDS HERE -->
+            
+            <!-- 제품정보 -->
+			<div class="proDetail" id="proDetail1">
+				<h3>제품 정보</h3>
+				<table class="milkForm">
+					<caption>제품 상세정보</caption>
+					<colgroup>
+						<col width="30%">
+						<col width="">
+					</colgroup>
+					<tbody>
+						<tr>
+							<th>제품명</th>
+							<td>Plain Yogurt</td>
+						</tr>
+						<tr>
+							<th>식품의 유형</th>
+							<td>발효유</td>
+						</tr>
+						<tr>
+							<th>제조원 및 생산자</th>
+							<td>MILKSAJO</td>
+						</tr>
+						<tr>
+							<th>소재지</th>
+							<td>123, Teheran-ro, Gangnam-gu, Seoul, Republic of Korea</td>
+						</tr>
+						<tr>
+							<th>수입품의 경우 수입자</th>
+							<td>해당사항 없음</td>
+						</tr>
+						<tr>
+							<th>제조일/유통기한/보관방법</th>
+							<td>냉장 12일</td>
+						</tr>
+						<tr>
+							<th>중량 및 구성</th>
+							<td>400g</td>
+						</tr>
+						<tr>
+							<th>원재료 및 함량</th>
+							<td>원유 96%(국산), 혼합탈지분유(네덜란드산), 유크림(국산), 유단백분말, 피쉬젤라틴, 유화제, 유산균(S. thermophilus, L. bulgaricus, L-GG)5억이상/g</td>
+						</tr>
+						<tr>
+							<th>고객상담실 연락처</th>
+							<td>1588-1588</td>
+						</tr>
+					</tbody>
+				</table>
+				<br>
+			</div>
+			<!-- 제품 정보 ENDS -->
+
+      <script type="text/javascript">
+
+      //Scroll reveal animations
+
+      new WOW().init();
+
+      //Scroll activated background change
+      $(function() {
+            $(document).scroll(function() {
+                  var $nav = $(".nav");
+                  $nav.toggleClass('scrolled', $(this).scrollTop() > $nav.height());
+            });
+      });
+
+      //Toggle MENU
+
+      var t1 = new TimelineMax({paused: true});
+      t1.to(".menu", 0.5, {
+            left: "0%",
+            ease: Power2.easeInOut
+      });
+
+      t1.reverse();
+      $(document).on("click", ".menu-open", function() {
+            t1.reversed(!t1.reversed());
+      });
+      $(document).on("click", ".menu-close", function() {
+            t1.reversed(!t1.reversed());
+      });
+      
+    //Toggle CART
+
+      var t2 = new TimelineMax({paused: true});
+      t2.to(".cart", 0.5, {
+            right: "0%",
+            ease: Power2.easeInOut
+      });
+
+      t2.reverse();
+      $(document).on("click", ".cart-open", function() {
+            t2.reversed(!t2.reversed());
+            
+      });
+      $(document).on("click", ".cart-close", function() {
+            t2.reversed(!t2.reversed());
+      });
+      
+      //CATEGORY
+      
+      $(function(){
+		var m=$('.menu>ul>li>a');
+		var div=$('.menu>ul>li>div');
+
+		m.each(function(){
+			$(this).click(function(){
+				//$(this).next().slideToggle(800)
+				$(this).next().slideToggle(800)
+				.parent().siblings().find('div:visible').slideUp(800);
+			});
+		});
+	});
+      
+
+      </script>
+</body>
+</html>

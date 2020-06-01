@@ -1,0 +1,60 @@
+<%@page import="com.milk.dto.MemberOrderDTO"%>
+<%@page import="com.milk.dao.MemberDAO"%>
+<%@page import="com.milk.dto.MemberDTO"%>
+<%@page import="com.milk.dao.OrderDAO"%>
+<%@page import="com.milk.dto.OrderDTO"%>
+<%@page import="java.text.DecimalFormat"%>
+<%@page import="com.milk.dao.ProductDAO"%>
+<%@page import="com.milk.dto.ProductDTO"%>
+<%@page import="java.util.List"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+ <% 
+ 	MemberDTO member=(MemberDTO)session.getAttribute("loginMember");
+ 	
+ 	String id=member.getId();
+ 	
+ 	List<MemberOrderDTO> orderList=OrderDAO.getDAO().selectMemberIdOrder(id);
+ 	
+ %>
+
+<div class="container">
+	<div class="my_list">
+		<div class="header" style="margin: 20px; padding: 10px;">주문 내역</div>
+		<div>
+		<%if(orderList==null){ %>
+			<div class="emtyMsg">주문 내역이 없습니다.</div>
+		<%} else{ %>
+			<div class="row" >
+				<span class="col-2 orderNo" style="text-align: center; padding-bottom: 10px;">주문번호</span>
+				<span class="col-4 pname" style="text-align: center; padding-bottom: 10px;">상품정보</span>
+				<span class="col-2 amount" style="text-align: center; padding-bottom: 10px;">주문 수량</span>
+				<span class="col-3 price" style="text-align: center; padding-bottom: 10px;">가격</span>
+				<span class="col-1 state" style="text-align: center; padding-bottom: 10px;">배송 정보</span>
+			</div>
+			
+			<%for(MemberOrderDTO order: orderList){ %>
+				<div class="infoBox" style="border: 1px solid rgba(0,0,0,.125);">
+					<div class="row" style="text-align: center;">
+						<div class=" orderNo" ><%=order.getOrderNo() %></div>
+						<%-- <div class="image"><input type="image" src="<%=request.getContextPath()%>/images/<%=order.getImage() %>"></div>--%>
+						<div class="pname col-1" style="text-align: center;"><%=order.getProduct()%></div>
+						<div class="state co-2" style="text-align: center;"><%=order.getAmount() %></div>
+						<div class="qty col-3" style="text-align: center;"><%=DecimalFormat.getInstance().format(order.getPrice()) %>원</div>
+						<%--<% for(int i=0;i>3;i++) { %>
+							<div class="col-1 state" style="text-align: center;"><%=order.getState() %></div>
+							<% if(i==0) { %>
+								<div class="col-1 state" style="text-align: center;">주문 확인중</div>
+							<% } else if (i==1){%>
+								<div class="col-1 state" style="text-align: center;">입금 완료</div>
+							<% } else if(i==2) {%>
+								<div class="col-1 state" style="text-align: center;">배송 중</div>
+							<% } %>
+						<% } %> --%>
+					</div>
+				</div>
+			<%} %>
+		<%} %>
+		</div>
+	</div>
+<div>

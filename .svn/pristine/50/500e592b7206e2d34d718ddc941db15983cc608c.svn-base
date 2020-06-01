@@ -1,0 +1,116 @@
+<%@page import="com.milk.dao.BoardDAO"%>
+<%@page import="com.milk.dto.BoardDTO"%>
+<%@page import="java.util.List"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%
+	
+
+%>
+<style>
+.row {
+	margin-top: 100px;
+}
+
+
+
+.table{
+	text-align: center;
+
+}
+
+.btn{
+    color: #fff;
+    background-color: #d9edf7;
+    border-color: #d9edf7;
+
+}
+
+th{
+	text-align: center;
+
+}
+
+
+td{
+	background-color: white;
+}
+</style>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="MILKSAJO">
+  		
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<link rel="icon" href="yourIconUrl" type="image/gif" sizes="16x16">
+  		
+<!-- google font -->
+<link href="https://fonts.googleapis.com/css?family=Playfair+Display&display=swap" rel="stylesheet">
+  		
+<!-- bootstrap cdn -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+     	
+<!-- jquery cdn -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<link rel="stylesheet" href="board.css">
+
+<form id="board" name="boardForm" action="<%=request.getContextPath() %>/index.jsp?workgroup=board&work=board_list"></form>
+<body>	
+	<div>
+		<div class="container">		
+			<div class="row" >
+				<div class="col-lg-6 ">
+				
+				</div>
+				<div class="col-lg-6 ">
+				<blockquote class="blockquote text right">
+				<p class="mb-0">milk To </p>
+				<footer class="blockquote-footer" >Q & A BOARD</footer>
+				</div>
+			</div>
+			<div class="table">
+	           		<table class="table table-sm" >
+						<thead class="bg-info">
+							<tr>
+							 	<th>번호</th>
+								<th>제목</th>
+								<th>작성자</th>
+								<th>작성일</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<th scope="row">1</td>
+								<td>얼룩소는 엄마 닮나요?</td>
+								<td>흰우유</td>
+								<td>2020-01-04</td>
+								
+							</tr>
+							
+						</tbody>
+					</table>
+				
+				<a href="#" class="btn pull-right">글쓰기</a>
+				
+				<div class="text-center">
+					<ul class="pagination">
+						<li class="page-item">
+							<a class="page-link" href="#" aria-label="Previous">
+								<span aria=hidden="true">&laquo;</span>
+							</a>
+						</li>
+						<li><a href="#">1</a></li>
+						<li><a href="#">2</a></li>
+						<li><a href="#">3</a></li>
+						<li><a href="#">4</a></li>
+						<li><a href="#">5</a></li>
+						<li class="page-item">
+							<a class="page-link" href="#" aria-label="Next">
+								<span aria=hidden="true">&raquo;</span>
+							</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

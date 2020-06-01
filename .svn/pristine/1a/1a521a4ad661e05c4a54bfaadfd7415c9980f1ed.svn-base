@@ -1,0 +1,379 @@
+package com.milk.dao;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.milk.dto.BoardDTO;
+
+public class BoardDAO extends JdbcDAO{
+	private static BoardDAO _dao;
+	
+	public BoardDAO() {
+		// TODO Auto-generated constructor stub
+	}
+	
+	static {
+		_dao=new BoardDAO();
+	}
+	
+	public static BoardDAO getDAO() {
+		return _dao;
+	}
+	
+	//--------------------1게시글 입력------------------------//
+	
+	public int insertBoarder(BoardDTO board) {
+		Connection con=null;
+		PreparedStatement ps=null;
+		int rows=0;
+		
+		try {
+			con=getConnection();
+			String sql="insert into boarder values(?,?,?,?,sysdate,0,?,?,?,?,?)";
+			
+			ps=con.prepareStatement(sql);
+			ps.setInt(1, board.getNum());
+			ps.setString(2, board.getId());
+			ps.setString(3, board.getWriter());
+			ps.setString(4, board.getSubject());
+			ps.setInt(5, board.getRef());
+			ps.setInt(6, board.getReStep());
+			ps.setString(7, board.getContent());
+			ps.setString(8, board.getId());
+			ps.setInt(9, board.getState());
+			
+			rows=ps.executeUpdate();
+		
+		} catch (SQLException e) {
+			System.out.println("[에러]insertBoarder() 메소드의 오류");
+		} finally {
+			close(con, ps);
+			
+		}
+		return rows;
+	}
+	
+	//-------------2 게시글 번호로 저장된 게시글 삭제--------------------//
+		
+	public int deleteBoard(int num) {
+			Connection con=null;
+			PreparedStatement pstmt=null;
+			int rows=0;
+			try {
+				con=getConnection();
+				
+				String sql="update board set state=9 where num=?";
+				pstmt=con.prepareStatement(sql);
+				pstmt.setInt(1, num);
+				
+				rows=pstmt.executeUpdate();
+			} catch (SQLException e) {
+				System.out.println("[에러]deleteBoard() 메소드의 SQL 오류 = "+e.getMessage());
+			} finally {
+				close(con, pstmt);
+			}
+			return rows;
+		}
+		
+		//-------------------- 3 게시글 변경-------------------// 
+		
+		public int updateBoard(BoardDTO board) {
+			Connection con=null;
+			PreparedStatement pstmt=null;
+			int rows=0;
+			try {
+				con=getConnection();
+				
+				String sql="update board set subject=?,state=?,content=? where num=?";
+				pstmt=con.prepareStatement(sql);
+				pstmt.setString(1, board.getSubject());
+				pstmt.setInt(2, board.getState());
+				pstmt.setString(3, board.getContent());
+				pstmt.setInt(4, board.getNum());
+				
+				rows=pstmt.executeUpdate();
+			} catch (SQLException e) {
+				System.out.println("[에러]updateBoard() 메소드의 SQL 오류 = "+e.getMessage());
+			} finally {
+				close(con, pstmt);
+			}
+			return rows;
+		}
+	
+	// ------------------4 부모글 정보 전달 받아 테이블에 게시글 정보 변경 변경행 갯수 반환------------------------//
+	
+		public int updateReStep(int ref, int reStep) {
+		Connection con=null;
+		PreparedStatement ps=null;
+		int rows=0;
+		
+		try {
+			con=getConnection();
+			
+			String sql="update boarder set re_step=re_step+1 where ref=? and re_step>?";
+			ps=con.prepareStatement(sql);
+			ps.setInt(1, ref);
+			ps.setInt(2, reStep);
+			
+			rows=ps.executeUpdate();
+			
+		} catch (SQLException e) {
+			System.out.println("[에러]updateBoarder() 메소드의 오류");
+		} finally {
+			close(con, ps);
+		}
+		return rows;
+	}
+	
+	//------------------- 5 시퀀스 증가컬럼값 호출------//
+	
+	public int selectNextNum() {
+		Connection con=null;
+		PreparedStatement pstmt=null;
+		ResultSet rs=null;
+		int nextNum=0;
+		try {
+			con=getConnection();
+			
+			String sql="select boarder_seq.nextval from dual";
+			pstmt=con.prepareStatement(sql);
+			
+			rs=pstmt.executeQuery();
+			
+			if(rs.next()) {
+				nextNum=rs.getInt(1);
+			}
+		} catch (SQLException e) {
+			System.out.println("[에러]selectNextNum() 메소드의 SQL 오류 = "+e.getMessage());
+		} finally {
+			close(con, pstmt, rs);
+		}
+		return nextNum;
+	}
+	
+	//-----------------------------6 게시글 갯수 검색 반환---------------//
+	public int selectBoarderCount(String search, String keyword) {
+		Connection con=null;
+		PreparedStatement pstmt=null;
+		ResultSet rs=null;
+		int count=0;
+		try {
+			con=getConnection();
+			
+			if(keyword.equals("")) {
+				String sql="select count(*) from boarder";
+				pstmt=con.prepareStatement(sql);
+			} else {
+				String sql="select count(*) from boarder where "+search+" like '%'||?||'%'";
+				pstmt=con.prepareStatement(sql);
+				pstmt.setString(1, keyword);
+			}
+			
+			rs=pstmt.executeQuery();
+			
+			if(rs.next()) {
+				count=rs.getInt(1);
+			}
+		} catch (SQLException e) {
+			System.out.println("[에러]selectBoarderCount() 메소드의 SQL 오류 = "+e.getMessage());
+		} finally {
+			close(con, pstmt, rs);
+		}
+		return count;		
+	}
+	
+	//-------------7 게시글 번호로 게시글 검색------------//
+	public BoardDTO selectNumBoarder(int num) {
+		Connection con=null;
+		PreparedStatement pstmt=null;
+		ResultSet rs=null;
+		BoardDTO board=null;
+		try {
+			con=getConnection();
+			
+			String sql="select * from boarder where num=?";
+			pstmt=con.prepareStatement(sql);
+			pstmt.setInt(1, num);
+			
+			rs=pstmt.executeQuery();
+			
+			if(rs.next()) {
+				board=new BoardDTO();
+				board.setNum(rs.getInt("num"));
+				board.setId(rs.getString("id"));
+				board.setWriter(rs.getString("writer"));
+				board.setSubject(rs.getString("subject"));
+				board.setRegDate(rs.getString("reg_date"));
+				board.setReadCount(rs.getInt("readcount"));
+				board.setRef(rs.getInt("ref"));
+				board.setReStep(rs.getInt("re_step"));
+				board.setContent(rs.getString("content"));
+				board.setIp(rs.getString("ip"));
+				board.setState(rs.getInt("state"));	
+			}
+		} catch (SQLException e) {
+			System.out.println("[에러]selectNumBoarder() 메소드의 SQL 오류 = "+e.getMessage());
+		} finally {
+			close(con, pstmt, rs);
+		}
+		return board;
+	}
+	
+	//--------------------8 시작행, 종료행 번호로 저장된 게시글 검색 -------------------------//
+	public List<BoardDTO> selectBoarder(int startRow, int endRow, String search, String keyword) {
+		Connection con=null;
+		PreparedStatement pstmt=null;
+		ResultSet rs=null;
+		List<BoardDTO> boardList=new ArrayList<BoardDTO>();
+		try {
+			con=getConnection();
+			
+			if(keyword.equals("")) {
+				String sql="select * from (select rownum rn,temp.* from "
+					+ "(select * from boarder order by ref desc, re_step asc) "
+					+ "temp) where rn between ? and ?";
+				pstmt=con.prepareStatement(sql);
+				pstmt.setInt(1, startRow);
+				pstmt.setInt(2, endRow);
+			} else {
+				String sql="select * from (select rownum rn,temp.* from "
+						+"(select * from boarder where "
+						+search+" like '%'||?||'%' and state!=9 "
+						+"order by ref desc, re_step asc) "
+						+"temp) where rn between ? and ?";
+				pstmt=con.prepareStatement(sql);
+				pstmt.setString(1, keyword);
+				pstmt.setInt(2, startRow);
+				pstmt.setInt(3, endRow);
+			}
+			
+			rs=pstmt.executeQuery();
+			
+			while(rs.next()) {
+				BoardDTO board=new BoardDTO();
+				board.setNum(rs.getInt("num"));
+				board.setId(rs.getString("id"));
+				board.setWriter(rs.getString("writer"));
+				board.setSubject(rs.getString("subject"));
+				board.setRegDate(rs.getString("reg_date"));
+				board.setReadCount(rs.getInt("readcount"));
+				board.setRef(rs.getInt("ref"));
+				board.setReStep(rs.getInt("re_step"));
+				board.setContent(rs.getString("content"));
+				board.setIp(rs.getString("ip"));
+				board.setState(rs.getInt("state"));
+				boardList.add(board);
+			}
+		} catch (SQLException e) {
+			System.out.println("[에러]selectBoarder() 메소드의 SQL 오류 = "+e.getMessage());
+		} finally {
+			close(con, pstmt, rs);
+		}
+		return boardList;
+	}
+	
+	//-------------------9 게시글 조회수 변경--------------//
+	public int updateReadCount(int num) {
+		Connection con=null;
+		PreparedStatement pstmt=null;
+		int rows=0;
+		try {
+			con=getConnection();
+			
+			String sql="update boarder set readcount=readcount+1 where num=?";
+			pstmt=con.prepareStatement(sql);
+			pstmt.setInt(1, num);
+			
+			rows=pstmt.executeUpdate();
+		} catch (SQLException e) {
+			System.out.println("[에러]updateReadCount() 메소드의 SQL 오류 = "+e.getMessage());
+		} finally {
+			close(con, pstmt);
+		}
+		return rows;
+	}
+	
+	//--------------------10 게시글전체 조회(댓글제외)-------------------------//
+	public List<BoardDTO> selectAllBoarder() {
+		Connection con=null;
+		PreparedStatement pstmt=null;
+		ResultSet rs=null;
+		List<BoardDTO> boardList=new ArrayList<BoardDTO>();
+		try {
+			con=getConnection();
+			String sql="select * from boarder where re_step=?";
+			
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, 0);
+			rs=pstmt.executeQuery();
+			
+			while(rs.next()) {
+				BoardDTO board=new BoardDTO();
+				
+				board.setNum(rs.getInt("num"));
+				board.setId(rs.getString("id"));
+				board.setWriter(rs.getString("writer"));
+				board.setSubject(rs.getString("subject"));
+				board.setRegDate(rs.getString("reg_date"));
+				board.setReadCount(rs.getInt("readcount"));
+				board.setRef(rs.getInt("ref"));
+				board.setReStep(rs.getInt("re_step"));
+				board.setContent(rs.getString("content"));
+				board.setIp(rs.getString("ip"));
+				board.setState(rs.getInt("state"));
+				
+				boardList.add(board);
+			}
+		} catch (SQLException e) {
+			System.out.println("[에러]selectAllBoarder() 메소드의 SQL 오류 = "+e.getMessage());
+		} finally {
+			close(con, pstmt, rs);
+		}
+		return boardList;
+	}
+	
+	//--------------------10 댓글전체 조회(게시글번호를 받음)-------------------------//
+	public List<BoardDTO> selectAllComment(int reg) {
+		Connection con=null;
+		PreparedStatement pstmt=null;
+		ResultSet rs=null;
+		List<BoardDTO> boardList=new ArrayList<BoardDTO>();
+		try {
+			con=getConnection();
+			String sql="select * from boarder where re_step<>0 and ref=?";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, reg);
+			rs=pstmt.executeQuery();
+			
+			while(rs.next()) {
+				BoardDTO board=new BoardDTO();
+				
+				board.setNum(rs.getInt("num"));
+				board.setId(rs.getString("id"));
+				board.setWriter(rs.getString("writer"));
+				board.setSubject(rs.getString("subject"));
+				board.setRegDate(rs.getString("reg_date"));
+				board.setReadCount(rs.getInt("readcount"));
+				board.setRef(rs.getInt("ref"));
+				board.setReStep(rs.getInt("re_step"));
+				board.setContent(rs.getString("content"));
+				board.setIp(rs.getString("ip"));
+				board.setState(rs.getInt("state"));
+				
+				boardList.add(board);
+			}
+		} catch (SQLException e) {
+			System.out.println("[에러]selectAllBoarder(int reg) 메소드의 SQL 오류 = "+e.getMessage());
+		} finally {
+			close(con, pstmt, rs);
+		}
+		return boardList;
+	}
+	
+	
+}
+

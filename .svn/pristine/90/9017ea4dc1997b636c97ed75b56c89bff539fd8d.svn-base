@@ -1,0 +1,60 @@
+package com.milk.dao;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.milk.dto.PageDTO;
+
+public class PageDAO extends JdbcDAO{
+	private static PageDAO _dao;
+	
+	private PageDAO() {}
+	
+	static {
+		_dao = new PageDAO();
+	}
+	
+	public static PageDAO getDAO() {
+		return _dao;
+	}
+	
+// page 리스트 전체를 가져오는 메소드 (join product)
+	public List<PageDTO> selectAllPage(){
+		List<PageDTO> list = new ArrayList<PageDTO>();
+		
+		Connection conn = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		try {
+			conn = getConnection();
+			
+			String sql = "select pp_no no, pp_serial_no serial, p_name product, pp_main_image image, pp_employee_no admin from product_page pp join product p on pp.pp_serial_no=p.p_serial_no order by no";
+			
+			ps = conn.prepareStatement(sql);
+			
+			rs = ps.executeQuery();
+			
+			while(rs.next()) {
+				PageDTO page = new PageDTO();
+				
+				page.setPpNo(rs.getInt("no"));
+				page.setPpSerialNo(rs.getInt("serial"));
+				page.setProduct(rs.getString("product"));
+				page.setPpmainImage(rs.getString("image"));
+				page.setPpemployeeNo(rs.getInt("admin"));
+				
+				list.add(page);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(conn, ps, rs);
+		}
+		return list;
+	}
+}

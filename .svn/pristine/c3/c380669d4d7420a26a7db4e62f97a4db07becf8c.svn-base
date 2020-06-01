@@ -1,0 +1,19 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+    
+<%
+	// id or pwd
+	String inf = request.getParameter("inf");
+	// error : 실패 / id 성공 : id / pwd 성공 : complete(메일발송) 
+	String msg = request.getParameter("msg");
+%>
+<div>
+//
+<%if(inf.equals("id")){ %>
+	
+<%}else if(inf.equals("pwd")){ %>
+	
+<%} %>
+</div>
+
+

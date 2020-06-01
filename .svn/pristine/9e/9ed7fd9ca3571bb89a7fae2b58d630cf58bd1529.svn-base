@@ -1,0 +1,80 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%-- 게시글 입력 페이지 게시글 입력 받아 write_action 페이지로 이동 --%>
+
+<%@include file="/security/login_status.jspf" %>
+<%
+	
+	String ref="0", reStep="0";
+	String pageNum="1";
+	
+	
+	if(request.getParameter("ref")!=null) {
+		ref=request.getParameter("ref");
+		reStep=request.getParameter("reStep");
+		pageNum=request.getParameter("pageNum");
+	}
+%>
+
+<% if(ref.equals("0")) {//새글인 경우 %>
+<h2>새글쓰기</h2>
+<% } else {//답글인 경우 %>
+<h2>답글쓰기</h2>
+<% } %>
+<form action="<%=request.getContextPath()%>/index.jsp?workgroup=board&work=board_write_action"
+	method="post" id="boardForm">
+	<input type="hidden" name="ref" value="<%=ref%>">
+	<input type="hidden" name="reStep" value="<%=reStep%>">
+	<input type="hidden" name="pageNum" value="<%=pageNum%>">
+
+
+<div>게시글 입력
+   	<ul>
+	    <li>
+	    <select class="custom-select">
+	 	 	<option selected>문의 사항</option>
+	  		<option value="1">배송 관련 문의</option>
+	  		<option value="2">상품 관련 문의</option>
+	 		<option value="3">기타 문의</option>
+		</select>
+		</li>	
+    	<li>
+    		<div>제목</div>
+    		<input name="bdTitle" id="bdTitle" type="text">
+    		<input type="checkbox" name="secret" value="1">비밀글
+    	</li>
+    	<li>
+    		<div>내용</div>
+    		<textarea name="Content" id="bdContent" rows="5" cols="50"></textarea>
+  			
+  		</li>
+    </ul>
+</div>
+<div>
+<button type="submit">글쓰기</button>
+<button type="button" id="listBtn">목록으로</button>
+</div>      
+</form>
+<div id="message" style="color: red;"></div>
+<script>
+$("#subject").focus();
+
+$("#boardForm").submit(function() {
+	if($("#bdTitle").val()=="") {
+		$("#message").text("제목을 입력해 주세요.");
+		$("#bdTitle").focus();
+		return false;
+	}
+	
+	if($("#bdContent").val()=="") {
+		$("#message").text("내용을 입력해 주세요.");
+		$("#bdContent").focus();
+		return false;
+	}
+});
+
+$("#listBtn").click(function() {
+	$("#boardForm").attr("action","<%=request.getContextPath()%>/index.jsp?workgroup=board&work=board_list");
+	$("#boardForm").submit();
+});	
+</script>

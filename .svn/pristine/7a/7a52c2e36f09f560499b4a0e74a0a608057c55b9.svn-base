@@ -1,0 +1,60 @@
+<meta charset="utf-8">
+
+<div class="input-group mb-3">
+  <div class="input-group-prepend">
+    <div class="input-group-text"><i class="fa fa-search"></i></div>
+    <button class="btn btn-outline-secondary" type="button" ng-click="changeUserSearchModel()">{{selectUserModel}}</button>
+	 </div>
+  		<input type="text" id = "userSearch" class="form-control" ng-model="userSearch[selectUserModel]" placeholder="search"></input>
+	</div>
+  </div>
+
+<div id="user-table">
+  <table class="table">
+      <thead class="thead-dark">
+      <!-- table title -->
+        <tr>
+          <th class="no">no</th>
+          <th class="id" ng-click="sortBy('id')">id</th>
+          <th class="name" ng-click="sortBy('name')">name</th>
+          <th class="age" ng-click="sortBy('age')">age</th>
+          <th class="tel" ng-click="sortBy('tel')">tel</th>
+          <th class="email" ng-click="sortBy('email')">eamil</th>
+          <th class="addr" ng-click="sortBy('addr')">address</th>
+          <th class="more">more</th>
+          <th class="more">trans</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="user in users | orderBy: sortField:reverseOrder | filter: userSearch | limitTo : tableLimit">
+          <td>{{$index + 1}}</td>
+          <td>{{user.id}}</td>
+          <td>{{user.name}}</td>
+          <td>{{user.age}}</td>
+          <td>{{user.tel}}</td>
+          <td>{{user.email}}</td>
+          <td>{{user.addr}}
+          </td>
+          <td class="btns">
+       		<button class="btn btn-warning btn-more">more</button>
+          </td>
+          <td class="btns">
+       		<button class="btn btn-warning btn-more">trans</button>
+          </td>	
+        </tr>
+      </tbody>
+      <tfoot>
+      	<tr>
+      		<td colspan="9" class="downTd">
+      		<button type="button" ng-click="downList()">
+      			<i class="fa fa-chevron-down"></i>
+      		</button>
+      		</td>
+      	</tr>
+      </tfoot>
+    </table>
+</div>
+<!-- 금일 생일자를 조회 -->
+<div ng-show="viewControl.formRangeSearch.value">
+	<mgr-range-search></mgr-range-search>
+</div>

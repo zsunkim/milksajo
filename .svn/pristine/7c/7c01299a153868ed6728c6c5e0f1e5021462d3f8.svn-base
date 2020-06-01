@@ -1,0 +1,16 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%
+
+%>
+
+<div class="shop_cart">
+	<h4>SHOPPING CART</h4>
+	<HR>
+	<h5>장바구니 담긴 상품</h5>
+	<div class="cart_list">
+		<table summary="사진, 제품명, 수량, 가격, 취소">
+			
+		</table>
+	</div>
+</div>

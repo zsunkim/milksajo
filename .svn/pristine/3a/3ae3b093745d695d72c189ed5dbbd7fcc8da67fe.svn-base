@@ -1,0 +1,36 @@
+<%@page import="com.milk.dto.CartDTO"%>
+<%@page import="com.milk.dao.CartDAO"%>
+<%@page import="java.util.List"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@include file="/security/login_check.jspf" %>
+<%-- 주문하기 위한 문서 --%>
+<%
+	if(request.getMethod().equals("GET")){
+		out.println("<script type='text/javascript'>");
+		out.println("location.href='"+request.getContextPath()+"/index.jsp?workgroup=error&work=error400';");
+		out.println("</script>");
+		return;
+	}
+
+	//totalPrice 저장
+	int totalPrice =  Integer.parseInt(request.getParameter("totalPrice"));
+	
+	//CART 테이블에 저장된 장바구니 목록을 확인하는 메소드 호출
+	List<CartDTO> cartList = CartDAO.getDAO().selectCart(loginMember.getId());
+	
+	
+	
+	//시리얼넘버 저장
+	String[] checkCart =  request.getParameterValues("checkCart");
+	int[] intCheckCart = null;
+	
+	if(checkCart!=null){
+		intCheckCart = new int[checkCart.length];
+		for(int no:intCheckCart){
+			CartDAO.getDAO().selectCart(id);
+		}
+	}
+	
+	
+%>

@@ -1,0 +1,45 @@
+<%@page import="com.milk.dao.OrderDAO"%>
+<%@page import="com.milk.dto.OrderDTO"%>
+<%@page import="java.text.DecimalFormat"%>
+<%@page import="com.milk.dao.ProductDAO"%>
+<%@page import="com.milk.dto.ProductDTO"%>
+<%@page import="java.util.List"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+ <% 
+ 	List<OrderDTO> orderList=OrderDAO.getDAO().selectAllOrder();
+ 	List<ProductDTO> produList=ProductDAO.getDAO().selectAllProduct();
+ %>
+
+<div class="container">
+	<div class="my_list">
+		<div class="header" style="margin: 20px; padding: 10px;">주문 내역</div>
+		<div>
+		<%if((orderList)==null){ %>
+			<div class="emtyMsg">주문 내역이 없습니다.</div>
+		<%} else{ %>
+			<div class="row" >
+				<span class="col-2 orderNo" style="text-align: center; padding-bottom: 10px;">주문번호</span>
+				<span class="col-4 pname" style="text-align: center; padding-bottom: 10px;">상품정보</span>
+				<span class="col-2 amount" style="text-align: center; padding-bottom: 10px;">주문 수량</span>
+				<span class="col-3 price" style="text-align: center; padding-bottom: 10px;">가격</span>
+				
+				<span class="col-1 state" style="text-align: center; padding-bottom: 10px;">배송 정보</span>
+			</div>
+			
+			<%for(OrderDTO order:orderList){ %>
+				<div class="infoBox" style="border: 1px solid rgba(0,0,0,.125);">
+					<div class="row" style="text-align: center;">
+						<div class="col-2 orderNo"><%=order.getOrderNo() %></div>
+						<div class="col-4 pname" style="text-align: center;"><%=ProductDAO.getDAO().selectNoProduct(order.getSerialNo())%></div>
+						<div class="col-2 state" style="text-align: center;"><%=order.getAmount() %></div>
+						<div class="col-3 qty" style="text-align: center;"><%=DecimalFormat.getInstance().format(order.getPrice()) %>원</div>
+						
+						<div class="col-1 state" style="text-align: center;"><%=order.getState() %></div>
+					</div>
+				</div>
+			<%} %>
+		<%} %>
+		</div>
+	</div>
+<div>

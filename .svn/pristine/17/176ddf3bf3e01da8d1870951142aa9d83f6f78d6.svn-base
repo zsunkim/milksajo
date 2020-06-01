@@ -1,0 +1,75 @@
+<%@page import="com.milk.dto.BuyingRecordDTO"%>
+<%@page import="com.milk.dao.OrderDAO"%>
+<%@page import="com.milk.dao.CartDAO"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="com.milk.dto.CartDTO"%>
+<%@page import="java.util.List"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@include file="/security/login_check.jspf" %>
+<%
+	//현재 세션에 저장된 아이디 저장
+	String id = loginMember.getId();
+	//주문한 제품의 시리얼 넘버 저장
+	String[] serialNo = request.getParameterValues("serialNo");
+	
+	//시리얼 넘버의 배열을 int 형변환
+	int[] serial = null;
+	if(serialNo!=null){
+		serial = new int[serialNo.length];
+		for(int i=0;i<serialNo.length;i++){
+			serial[i] = Integer.parseInt(serialNo[i]);
+		}
+	}
+	
+	//BUYING_INF 테이블에 저장
+	OrderDAO.getDAO().insertBuyingInf(id);
+	
+	BuyingRecordDTO record = new BuyingRecordDTO();
+	//record.set
+	
+	//CART 테이블에서 select
+	List<CartDTO> cartList = new ArrayList<CartDTO>();
+	CartDTO orderList = null;
+	for(int no:serial){
+		orderList = CartDAO.getDAO().selectNoCart(no);
+		cartList.add(orderList);
+	}
+
+	//총 결제 금액
+	int totalPrice=0;
+	for(CartDTO cart:cartList){
+		int proPrice = cart.getCaAmount()*cart.product.getpPrice();
+		totalPrice += proPrice;
+	}
+	
+
+%>
+
+<style type="text/css">
+#payment {
+    margin-top: 14%;
+    margin-bottom: 17%;
+    margin-left: 35%;
+}
+
+#payment p {
+	margin-top: 20px;
+}
+</style>
+
+<div id="payment">    
+<h3>구매 완료!</h3>
+<h3>오늘도 우유사조와 함께 좋은하루되세요S2</h3>
+
+<p><a href="<%=request.getContextPath() %>/index.jsp?workgroup=home&work=home">메인으로</a></p>
+</div>
+
+
+
+
+
+
+
+
+

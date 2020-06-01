@@ -1,0 +1,29 @@
+<meta charset="utf-8">
+
+<!-- page : 페이지에 등록가능한 이미지를 등록 -->
+<div class="form form1">
+	<div class="image-form">
+		<div class="btn-group">
+			<button type="button" class="exit-btn" ng-click="closeImageForm()">X</button>
+		</div>
+		
+		<div class="title-form">
+			<label class="title">Image&nbsp;Management</label>
+		</div>
+		<div class="input-group mb-3" style="float:left; width: 100%;">
+    			<div class="input-group-text">image&nbsp;name</div>
+    			<select class="form-control">
+    				<option>1</option>
+    				<option>2</option>
+    			</select>
+    			
+    			<input type="button" class="btn btn-dark" ng-click="console.log('minus')" value="-">
+    			<input type="button" class="btn btn-dark" ng-clikc="console.log('plus click')" ng-blur="console.log('plus blur')" value="+">
+    	</div>
+    	<div class="custom-file">
+	  		<input type="file" class="custom-file-input" id="customFileLang" lang="es">
+	  		<label class="custom-file-label" for="customFileLang">Seleccionar Archivo</label>
+	  		<button type="button" class="btn btn-dark">add</button>
+		</div>
+	</div>
+</div>

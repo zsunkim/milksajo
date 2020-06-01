@@ -1,0 +1,19 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<style type="text/css">
+#payment {
+    margin-top: 14%;
+    margin-bottom: 17%;
+    margin-left: 35%;
+}
+
+#payment p {
+	margin-top: 20px;
+}
+</style>
+
+<div id="payment">    
+<h3>구매가 완료되었습니다. 감사합니다!<br>
+오늘도 우유사조와 함께 좋은하루되세요S2</h3>
+<p><a href="<%=request.getContextPath() %>/index.jsp?workgroup=home&work=home">메인으로</a></p>
+</div>

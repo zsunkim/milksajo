@@ -1,0 +1,25 @@
+<%@page import="com.milk.dao.CartDAO"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%-- 주문하기 위한 문서 --%>
+<%
+	if(request.getMethod().equals("GET")){
+		out.println("<script type='text/javascript'>");
+		out.println("location.href='"+request.getContextPath()+"/index.jsp?workgroup=error&work=error400';");
+		out.println("</script>");
+		return;
+	}
+	
+	//시리얼넘버 저장
+	String[] checkCart =  request.getParameterValues("checkCart");
+	int[] intCheckCart = null;
+	
+	if(checkCart!=null){
+		intCheckCart = new int[checkCart.length];
+		for(int no:intCheckCart){
+			CartDAO.getDAO().selectCart(id);
+		}
+	}
+	
+	
+%>

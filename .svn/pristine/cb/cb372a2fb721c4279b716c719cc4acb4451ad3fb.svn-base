@@ -1,0 +1,420 @@
+/*******************************
+    main ctrl
+*******************************/ 
+angular.module("managerApp").controller("MainCtrl", ["$scope", "$http", "$timeout", "uriConfig", "messageConfig", "viewControlConfig", "noticeDataFactory", function($scope, $http, $timeout, uriConfig, messageConfig, viewControlConfig, noticeDataFactory){
+	//message를 관리하는 객체
+	$scope.messages = messageConfig;
+	
+	// 모듈의 view를 컨트롤하는 객체
+	$scope.viewControl = viewControlConfig;
+	
+	// notice 모달의 순번 & notice List
+	$scope.notice_index = [1, 2, 3, 4, 5];
+	$scope.notice = noticeDataFactory;
+	$scope.selectNoticePage = 1;
+		
+	$scope.left = function(){
+		if($scope.selectNoticePage != 1){
+			$scope.selectNoticePage--;
+		}
+	}
+	
+// content-table의 갯수를 관리하는 태그
+	$scope.tableLimit = 10;
+	$scope.downList = function(){
+		$scope.tableLimit += 10;
+	}
+	
+// user : function for selecting search target
+	$scope.userModelCount = 0;
+	$scope.userModel = ["id", "name", "age", "tel", "email"];
+	$scope.selectUserModel = $scope.userModel[$scope.userModelCount];
+	$scope.changeUserSearchModel = function(){
+		if($scope.userModelCount == $scope.userModel.length-1){
+			$scope.userModelCount = 0;
+		}else{
+			$scope.userModelCount++;
+		}
+		$scope.selectUserModel = $scope.userModel[$scope.userModelCount];
+	}
+	
+// product : function for selecting search target
+	$scope.productModelCount = 0;
+	$scope.productModel = ["serial", "div", "name", "origin", "size", "price", "amount", "sales"];
+	$scope.selectProductModel = $scope.productModel[$scope.productModelCount];
+	
+	$scope.changeProductSearchModel = function(){
+		if($scope.productModelCount == $scope.productModel.length-1){
+			$scope.productModelCount = 0;
+			console.log($scope.selectProductModel);
+		}else{
+			$scope.productModelCount++;
+		}
+		$scope.selectProductModel = $scope.productModel[$scope.productModelCount];
+	}
+	
+// board : function for selecting search target
+	$scope.boardModelCount = 0;
+	$scope.boardModel = ["board", "change"];
+	$scope.selectBoardModel = $scope.boardModel[$scope.boardModelCount];
+	$scope.changeBoardSearchModel = function(){
+		if($scope.boardModelCount == $scope.boardModel.length-1){
+			$scope.boardModelCount = 0;
+			$scope.selectBoardModel = $scope.boardModel[$scope.boardModelCount];
+		}else{
+			$scope.boardModelCount++;
+			$scope.selectBoardModel = $scope.boardModel[$scope.boardModelCount];
+		}
+	}
+	
+// order : function for selecting search target
+	$scope.orderModelCount = 0;
+	$scope.orderModel = ["order_no", "user", "product", "amount", "deposit", "refund", "state"];
+	$scope.selectOrderModel = $scope.orderModel[$scope.orderModelCount];
+	$scope.changeOrderSearchModel = function(){
+		if($scope.orderModelCount == $scope.orderModel.length-1){
+			$scope.orderModelCount = 0;
+			$scope.selectOrderModel = $scope.orderModel[$scope.orderModelCount];
+		}else{
+			$scope.orderModelCount++;
+			$scope.selectOrderModel = $scope.orderModel[$scope.orderModelCount];
+		}
+	}
+//page : function for selecting search target
+	$scope.pageModelCount = 0;
+	$scope.pageModel = ["page", "change"];
+	$scope.selectPageModel = $scope.pageModel[$scope.pageModelCount];
+	$scope.changePageSearchModel = function(){
+		if($scope.pageModelCount == $scope.pageModel.length-1){
+			$scope.pageModelCount = 0;
+			$scope.selectPageModel = $scope.pageModel[$scope.pageModelCount];
+		}else{
+			$scope.pageModelCount++;
+			$scope.selectPageModel = $scope.pageModel[$scope.pageModelCount];
+		}
+	}
+	
+// function etc...
+	//login
+	$scope.login = function(){
+		$http({
+			method: 'POST',
+			url: uriConfig.login,
+			data: $.param({
+				mgrNo: loginForm.mgrNo.value,
+				mgrPwd: loginForm.mgrPwd.value
+			}),
+			headers: {
+				   'Content-Type': "application/x-www-form-urlencoded; charset=utf-8"
+			}
+		}).then(function successCallback(response) {
+			// ajax 성공
+			if(response.data == "true"){ //success
+				console.log("login sucess");
+				location.href = "#/home";
+				$scope.viewControl.darkSpace.value = false;
+				$scope.viewControl.formLogin.value = false;
+				$scope.loginForm.mgrNo = "";
+				$scope.loginForm.mgrPwd = "";
+			}else{
+				console.log("login fail");
+				loginForm.mgrPwd.value = "";
+				$scope.loginForm.mgrPwd.$error = {required: true}
+				loginForm.mgrPwd.focus();
+				$scope.showErrorBar("login error : check your information");
+			}
+		}, function errorCallback(response) {
+			console.log("error")
+		});
+	}
+	// join funcion
+	$scope.join = function(){
+		$http({
+			method: 'POST',
+			url: uriConfig.join,
+			data: $.param({
+				mgrNo: joinForm.mgrNo.value,
+				mgrPwd: joinForm.mgrPwd.value,
+				mgrRPwd: joinForm.mgrRPwd.value,
+				mgrName: joinForm.mgrName.value,
+				mgrCode: joinForm.mgrCode.value
+			}),
+			headers: {
+				   'Content-Type': "application/x-www-form-urlencoded; charset=UTF-8"
+			}
+		}).then(function successCallback(response) {
+			// ajax 성공
+			console.log(response);
+			console.log(response.data);
+			console.log(typeof response.data);
+			console.log(response.data == "true");
+			if(response.data == "true"){ //success
+				console.log("join");
+				$scope.showAlertBar("your sign in success. welcome");
+				$scope.joinReset();
+				$scope.viewControl.formJoin.value = false;
+				$scope.viewControl.formJoin.value = false;
+			}else{
+				console.log("error")
+				$scope.showErrorBar("code error");
+				joinForm.mgrPwd.value = "";
+				joinForm.mgrRPwd.value = "";
+				$scope.joinForm.mgrPwd.$error = {required: true}
+				$scope.joinForm.mgrRPwd.$error = {required: true}
+				joinForm.mgrPwd.focus();
+			}
+		}, function errorCallback(response) {
+			console.log("error")
+			$scope.showErrorBar("code error");
+			$scope.joinForm.mgrPwd.value = "";
+			$scope.joinForm.mgrRPwd.value = "";
+			$scope.joinForm.mgrPwd.$error = {required: true}
+			$scope.joinForm.mgrRPwd.$error = {required: true}
+		});
+	}
+	// 일치하는 아이디가 있는지 확인
+	$scope.isExist = function(target){
+		$http({
+			method: 'POST',
+			url: uriConfig.checkId,
+			data: $.param({
+				mgrNo: target
+			}),
+			headers: {
+				   'Content-Type': "application/x-www-form-urlencoded; charset=utf-8"
+			}
+		}).then(function successCallback(response) {
+			if(response.data == "true"){
+				$scope.exist = true;
+			}else{
+				$scope.exist = false;
+			}
+		}, function errorCallback(response) {
+			// called asynchronously if an error occurs
+			// or server returns response with an error status.
+			console.log("error")
+		});
+	}
+	// join form에서 비밀번호를 확인하는 메소드
+	$scope.compare = function (repassword) {
+        $scope.isconfirm = $scope.mgrPwdJoin == repassword ? true : false;
+    }
+	
+	$scope.joinReset = function(){
+		joinForm.mgrNo.value = "";
+		joinForm.mgrPwd.value = "";
+		joinForm.mgrRPwd.value = "";
+		joinForm.mgrName.value = "";
+		joinForm.mgrCode.value = "";
+		$scope.joinForm.mgrNo.$error = {required: true}
+		$scope.joinForm.mgrPwd.$error = {required: true}
+		$scope.joinForm.mgrRPwd.$error = {required: true}
+		$scope.joinForm.mgrName.$error = {required: true}
+		$scope.joinForm.mgrCode.$error = {required: true}
+	}
+	
+	//orderBy sort setting
+	$scope.reverseOrder = true;
+	$scope.sortField = 'developer';
+	$scope.sortBy = function(sortField) {
+	  $scope.reverseOrder = ($scope.sortField === sortField) ? !$scope.reverseOrder : false;
+	  $scope.sortField = sortField;
+	};
+	
+	// focus to top
+	$scope.toTop = function(){
+		window.scrollTo(0, 0);
+	}
+	
+	// focus to bottom
+	$scope.toBottom = function(){
+		console.log(pageXOffset);
+		console.log(pageYOffset);
+	}
+	
+	//function logout
+	$scope.navReset = function(){
+		//control nav
+		var as = document.getElementsByTagName("a");
+		for(var a of as){
+			a.className = "nav-link";
+		}
+		document.getElementById("home-tab").classList.add("active");
+		
+		//show loginForm
+		$scope.viewControl.darkSpace.value = true;
+		$scope.viewControl.formLogin.value = true;
+	}
+	
+	$scope.logout = function(){
+		if(confirm("Do you want logout?")){
+			$scope.navReset(); // test
+			$http({
+				method: 'POST',
+				url: uriConfig.logout,
+			}).then(function successCallback(response) {
+				$scope.navReset();
+				console.log("success logout");
+			}, function errorCallback(response) {
+				// called asynchronously if an error occurs
+				// or server returns response with an error status.
+				console.log("error")
+			});
+		}else{
+			this.preventDefault();
+			console.log("cancel logout");
+		}
+	}
+	
+	//reset tableLimit
+	$scope.resetTableLimit = function(){
+		$scope.tableLimit = 10;
+	}
+	
+	//error bar control
+	$scope.showErrorBar = function(msg){
+		$scope.messages.error = msg;
+		$scope.viewControl.errorBar.value = true;
+		$timeout(function(){
+			console.log("error...");
+			$scope.viewControl.errorBar.value = false;
+		}, 3000);
+	}
+	
+	//alert bar control
+	$scope.showAlertBar = function(msg){
+		$scope.messages.alert = msg;
+		$scope.viewControl.alertBar.value = true;
+		$timeout(function(){
+			console.log("alert!!!");
+			$scope.viewControl.alertBar.value = false;
+		}, 3000);
+	}
+//functions for form
+	//into join
+	$scope.openJoinForm = function(){
+		loginForm.mgrNo.value = "";
+		loginForm.mgrPwd.value = "";
+		$scope.loginForm.mgrNo.$error = {required: true}
+		$scope.loginForm.mgrPwd.$error = {required: true}
+		$scope.viewControl.formJoin.value = true;
+		event.stopPropagation();
+	}
+	//exit join
+	$scope.closeJoinForm = function(){
+		$scope.joinReset();
+		$scope.viewControl.formJoin.value = false;
+	}
+	
+	//into notice
+	$scope.openNoticeForm = function(){
+		$scope.viewControl.darkSpace.value = true;
+		$scope.viewControl.formNotice.value = true;
+		event.stopPropagation();
+		event.preventDefault();
+		console.log("notice 업데이트");
+	}
+	//exit notice
+	$scope.closeNoticeForm = function(){
+		$scope.viewControl.darkSpace.value = false;
+		$scope.viewControl.formNotice.value = false;
+	}
+	
+	//into menual
+	$scope.openMenualForm = function(){
+		$scope.viewControl.darkSpace.value = true;
+		$scope.viewControl.formMenual.value = true;
+		console.log("open menual form");
+		event.stopPropagation();
+		event.preventDefault();
+	}
+	//exit menual
+	$scope.closeMenualForm = function(){
+		$scope.viewControl.darkSpace.value = false;
+		$scope.viewControl.formMenual.value = false;
+	}
+	
+	//into range-search
+	$scope.openRangeSearchForm = function(){
+		$scope.viewControl.darkSpace.value = true;
+		$scope.viewControl.formRangeSearch.value = true;
+		console.log("open menual form");
+		event.stopPropagation();
+		event.preventDefault();
+	}
+	//exit range-search
+	$scope.closeRangeSearchForm = function(){
+		$scope.viewControl.darkSpace.value = false;
+		$scope.viewControl.formRangeSearch.value = false;
+	}
+}]);
+
+/*********************************************************************************************************************************************************/
+/*******************************
+    user ctrl
+*******************************/
+angular.module("managerApp").controller("UserCtrl", ["$scope", "$http", "uriConfig", "userDataFactory", function($scope, $http, uriConfig, userDataFactory){
+	$scope.users = [];
+	
+	userDataFactory.get().then(function(data){
+		$scope.users = data;
+	})
+	console.log($scope.users);
+}]);
+
+/*******************************
+    product ctrl
+*******************************/
+angular.module("managerApp").controller("ProductCtrl", ["$scope", "$http", "productDataFactory", function($scope, $http, productDataFactory){
+	$scope.products = [];
+	
+	productDataFactory.get().then(function(data){
+		$scope.products = data;
+	})
+	
+	console.log($scope.products);
+}]);
+
+/*******************************
+	board ctrl
+*******************************/
+angular.module("managerApp").controller("BoardCtrl", ["$scope", "$http", "boardDataFactory", function($scope, $http, boardDataFactory){
+	$scope.board = boardDataFactory;
+	
+	boardDataFactory.get().then(function(data){
+		$scope.board = data;
+	})
+	
+}]);
+
+/*******************************
+    order ctrl
+*******************************/
+angular.module("managerApp").controller("OrderCtrl", ["$scope", "$http", "uriConfig", "orderDataFactory", function($scope, $http, uriConfig, orderDataFactory){
+	
+	$scope.orders = [];
+	
+	orderDataFactory.get().then(function(data){
+		$scope.orders = data;
+	})
+	
+	console.log($scope.orders);
+}]);
+
+/*******************************
+	page ctrl
+*******************************/
+angular.module("managerApp").controller("PageCtrl", ["$scope", "$http", "pageDataFactory", function($scope, $http, pageDataFactory){
+	$scope.pages = []
+	
+	pageDataFactory.get().then(function(data){
+		$scope.pages = data;
+	})
+}]);
+
+// 로그인 관련 기능 컨트롤러
+angular.module("managerApp").controller("LoginCtrl", ["$scope", function($scope){
+	// 같은 브라우저 창에서 로그인 세션으로 로그인 유지하는 기능
+	$scope.viewControl.darkSpace.value = false;
+	$scope.viewControl.formLogin.value = false;
+}]);

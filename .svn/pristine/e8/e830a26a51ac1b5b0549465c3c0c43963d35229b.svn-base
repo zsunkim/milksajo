@@ -1,0 +1,38 @@
+<%@page import="java.text.DecimalFormat"%>
+<%@page import="com.milk.dao.ProductDAO"%>
+<%@page import="com.milk.dto.ProductDTO"%>
+<%@page import="java.util.List"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+ <% 
+ 	List<ProductDTO> productList=ProductDAO.getDAO().selectAllProduct();
+ %>
+
+<div class="container">
+			<div class="my_list">
+				<span>주문 내역</span>
+				
+				<%if(productList.isEmpty()){ %>
+					<div class="emtyMsg">주문 내역이 없습니다.</div>
+				<%} else{ %>
+					<div class="infoHead">
+						<span class="name">상품정보</span>
+						<span class="qty">금액</span>
+						<span class="price">상태</span>
+					</div>
+					
+					<%for(ProductDTO product:productList){ %>
+						<div class="infoBox">
+							<div class="name">
+								<a href="<%=request.getContextPath() %>/product/shope.jsp?productNum=<%=product.getpSerialNo() %>">
+									<img src=".../images/<%=product.%>" alt="상품 이미지" />
+									<%=product.getpStatus()%>
+								</a>
+							</div>
+							<div class="qty"><%=DecimalFormat.getInstance().format(product.getpPrice()) %>원</div>
+							<div class="price"><%=order.getOrder_state() %></div>
+						</div>
+				<%} %>
+		<%} %>
+	</div>
+<div>

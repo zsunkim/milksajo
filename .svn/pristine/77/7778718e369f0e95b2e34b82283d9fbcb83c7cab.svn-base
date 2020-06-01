@@ -1,0 +1,59 @@
+package com.milk.dao;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.milk.dto.ProductPageDTO;
+
+public class ProductPageDAO extends JdbcDAO{
+	private static ProductPageDAO _dao;
+	
+	private ProductPageDAO() {}
+	
+	static {
+		_dao = new ProductPageDAO();
+	}
+	
+	public static ProductPageDAO getDAO() {
+		return _dao;
+	}
+	
+// page 리스트 전체를 가져오는 메소드
+	public List<ProductPageDTO> selectAllPage(){
+		List<ProductPageDTO> list = new ArrayList<ProductPageDTO>();
+		
+		Connection conn = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		try {
+			conn = getConnection();
+			
+			String sql = "select * from product_page order by pp_no";
+			
+			ps = conn.prepareStatement(sql);
+			
+			rs = ps.executeQuery();
+			
+			while(rs.next()) {
+				ProductPageDTO page = new ProductPageDTO();
+				
+				page.setPpNo(rs.getInt("pp_no"));
+				page.setPpSerialNo(rs.getInt("pp_serial_no"));
+				page.setPpMainImage(rs.getString("pp_main_image"));
+				page.setPpEmployeeNo(rs.getInt("pp_employee_no"));
+				
+				list.add(page);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(conn, ps, rs);
+		}
+		return list;
+	}
+}

@@ -1,0 +1,130 @@
+/************************************
+	service : 다양한 서비스를 제공(로그인, 회원가입)
+**************************************/
+angular.module("managerApp").service("mgService", ["$http", "$q", function($http, $q){
+	this.login = function(uri, no, pwd){
+		var deferred = $q.defer();
+		$http({
+			method: 'POST',
+			url: uri,
+			data: $.param({
+				mgrNo: no,
+				mgrPwd: pwd
+			}),
+			headers: {
+				   'Content-Type': "application/x-www-form-urlencoded; charset=utf-8"
+			}
+		}).then(function successCallback(response) {
+			// ajax 성공
+			deferred.resolve(response.data);
+		}, function errorCallback(response) {
+			console.log("ajax login error")
+		});
+		return deferred.promise;
+	}
+	
+	this.join = function(uri, no, pwd, rpwd, name, code){
+		var deferred = $q.defer();
+		$http({
+			method: 'POST',
+			url: uri,
+			data: $.param({
+				mgrNo: no,
+				mgrPwd: pwd,
+				mgrRPwd: rpwd,
+				mgrName: name,
+				mgrCode: code
+			}),
+			headers: {
+				   'Content-Type': "application/x-www-form-urlencoded; charset=UTF-8"
+			}
+		}).then(function successCallback(response) {
+			// ajax 성공
+			deferred.resolve(response.data);
+		}, function errorCallback(response) {
+			console.log("ajax join error")
+		});
+		
+		/*
+		$http({
+			method: 'POST',
+			url: uri,
+			data: $.param({
+				mgrNo: no,
+				mgrPwd: pwd
+			}),
+			headers: {
+				   'Content-Type': "application/x-www-form-urlencoded; charset=utf-8"
+			}
+		}).then(function successCallback(response) {
+			// ajax 성공
+			deferred.resolve(response.data);
+		}, function errorCallback(response) {
+			console.log("error")
+		});
+		*/
+		return deferred.promise;
+	}
+	
+}]);
+/************************************
+	notice service
+**************************************/
+angular.module("managerApp").factory("noticeDataFactory", ["$http", function($http){
+		return[{
+			e_no: "",
+			comment: "",
+			date: ""
+		}]
+}]);
+/*********************************************************************************************************/
+/************************************
+	Data factory
+**************************************/
+angular.module("managerApp").factory("dataFactory", ["$http", "$q", "uriConfig", function($http, $q, uriConfig){
+	return {
+		get: function(t){
+			var deferred = $q.defer();
+			
+			$http({
+				method: 'POST',
+				url: uriConfig.getData,
+				data: $.param({
+					type: t
+				}),
+				headers: {
+					'Content-Type': "application/x-www-form-urlencoded; charset=utf-8"
+				}
+			}).then(function successCallback(response) {
+				// ajax 성공
+				deferred.resolve(response.data);
+			}, function errorCallback(response) {
+				console.log("error : get data user");
+			});
+			
+			return deferred.promise;
+		},
+		getChart: function(t, v){
+			var deferred = $q.defer();
+			
+			$http({
+				method: 'POST',
+				url: uriConfig.getData,
+				data: $.param({
+					type: t,
+					value: v
+				}),
+				headers: {
+					'Content-Type': "application/x-www-form-urlencoded; charset=utf-8"
+				}
+			}).then(function successCallback(response) {
+				// ajax 성공
+				deferred.resolve(response.data);
+			}, function errorCallback(response) {
+				console.log("error : get data user");
+			});
+			
+			return deferred.promise;
+		}
+	}
+}]);

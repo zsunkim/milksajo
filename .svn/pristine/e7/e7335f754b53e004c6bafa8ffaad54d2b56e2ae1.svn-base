@@ -1,0 +1,26 @@
+<meta charset="utf-8">
+
+<div class="form form1">
+	<div class="range-search-form">
+		<div class="btn-group">
+			<button type="button" class="exit-btn" ng-click="closeRangeSearchForm()">X</button>
+		</div>
+		<div class="title-form">
+			<label class="title">Range&nbsp;Search</label>
+		</div>
+		<div class="dates">
+			<!-- start -->
+			<label>시작일</label>
+			<input type="date" class="form-control" />
+			<!-- end -->
+			<label>종료일</label>
+			<input type="date" class="form-control" />
+		</div>
+		<!-- button -->
+		<div class="btns">
+			<button class="btn btn-dark">생일</button>
+			<button class="btn btn-dark">가입일</button>
+			<button class="btn btn-dark">마지막로그인</button>
+		</div>
+	</div>
+</div>

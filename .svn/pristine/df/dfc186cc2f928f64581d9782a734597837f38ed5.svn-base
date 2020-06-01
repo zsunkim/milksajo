@@ -1,0 +1,112 @@
+package com.milk.mg;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.Date;
+import java.util.List;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import com.milk.dao.UserDAO;
+import com.milk.dto.UserDTO;
+
+import oracle.net.aso.a;
+
+/**
+ * Servlet implementation class GetData
+ */
+@WebServlet("/getdatamg")
+public class GetData extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+	
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+	}
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		HttpSession session = request.getSession();
+		request.setCharacterEncoding("utf-8");
+		response.setContentType("text/json; charset=utf-8"); 
+		PrintWriter out = response.getWriter();
+		
+		// 비정상적인 요청에 대한 처리 / 로그인 상태가 아닌경우
+		if(session.getAttribute("login") == null) {
+			out.print("error");
+			return;
+		}
+		String type = request.getParameter("type");
+		
+		// user데이터 요청에 대한 처리
+		if(type.equals("user")) {
+			// 결과값을 저장하는 인스턴스
+			String result = "";
+			StringBuffer buf = new StringBuffer();
+			
+			List<UserDTO> userList = UserDAO.getDAO().selectAllUser();
+			
+			int age = 0;
+			
+			buf.append("[");
+			for(UserDTO user : userList) {
+				age = (new Date().getYear()+1900) - Integer.parseInt(user.getuBirthday().substring(0, 4));
+				
+				buf.append("{");
+				buf.append("\"id\": \"" + user.getuUserId()+"\",");
+				buf.append("\"name\": \"" + user.getuName()+"\",");
+				buf.append("\"age\": \"" + age + "\",");
+				buf.append("\"tel\": \"" + user.getuTel()+"\",");
+				buf.append("\"email\": \"" + user.getuEmail()+"\",");
+				buf.append("\"addr\": \"" + user.getuAddress()+"\",");
+				buf.append("\"status\": \"" + user.getuState()+"\",");
+				buf.append("\"joindate\": \"" + user.getuJoinDate().substring(0,10)+"\",");
+				buf.append("\"lastlogin\": \"" + user.getuLastLogin().substring(0,10)+"\",");
+				buf.append("\"birthday\": \"" + user.getuBirthday().substring(0,10)+"\"");
+				buf.append("},");
+			}
+			int c = buf.length();
+			buf.replace(c-1, c, "]");
+			out.print(buf.toString());
+			return;
+		}
+		
+		// product 데이터 요청에 대한 처리 // 수정전
+		if(type.equals("product")) {
+			// 결과값을 저장하는 인스턴스
+			String result = "";
+			StringBuffer buf = new StringBuffer();
+			
+			List<UserDTO> userList = UserDAO.getDAO().selectAllUser();
+			
+			int age = 0;
+			
+			buf.append("[");
+			for(UserDTO user : userList) {
+				age = (new Date().getYear()+1900) - Integer.parseInt(user.getuBirthday().substring(0, 4));
+				
+				buf.append("{");
+				buf.append("\"id\": \"" + user.getuUserId()+"\",");
+				buf.append("\"name\": \"" + user.getuName()+"\",");
+				buf.append("\"age\": \"" + age + "\",");
+				buf.append("\"tel\": \"" + user.getuTel()+"\",");
+				buf.append("\"email\": \"" + user.getuEmail()+"\",");
+				buf.append("\"addr\": \"" + user.getuAddress()+"\",");
+				buf.append("\"status\": \"" + user.getuState()+"\",");
+				buf.append("\"joindate\": \"" + user.getuJoinDate().substring(0,10)+"\",");
+				buf.append("\"lastlogin\": \"" + user.getuLastLogin().substring(0,10)+"\",");
+				buf.append("\"birthday\": \"" + user.getuBirthday().substring(0,10)+"\"");
+				buf.append("},");
+			}
+			
+			int c = buf.length();
+			buf.replace(c-1, c, "]");
+			out.print(buf.toString());
+			return;
+		}
+		
+	}
+}

@@ -1,0 +1,24 @@
+<meta charset="utf-8">
+
+<!-- order : 주문관리를 일괄처리하는 form -->
+<div class="form form1">
+	<div class="batch-search-form">
+		<div class="btn-group">
+			<button type="button" class="exit-btn" ng-click="closeBatchSearchForm()">X</button>
+		</div>
+		
+		<div class="title-form">
+			<label class="title">Batch&nbsp;Processing</label>
+		</div>
+		
+		<div class="input-group mb-3" style="float:left; width: 100%;">
+    			<div class="input-group-text">order_no</div>
+    			<input type="text" class="form-control" ng-model="batchSearch" placeholder="search">
+   				<button class="btn btn-outline-secondary" type="button" ng-click="changeBoardSearchModel()"><i class="fa fa-search"></i></button>
+	  			
+		</div>
+		<!--  -->
+		<div class="data">
+		</div>
+	</div>
+</div>
